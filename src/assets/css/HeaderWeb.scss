@@ -1,0 +1,16 @@
+.Header-header {
+  padding-top: 24px;
+  padding-bottom: 24px;
+  position: relative;
+  background-color: #357266;
+}
+
+.Header-mobile-filters-btn {
+  display: block;
+}
+
+@media (min-width: 600px) {
+  .Header-mobile-filters-btn {
+    display: none;
+  }
+}
