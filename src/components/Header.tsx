@@ -7,7 +7,11 @@ import darkMoreBtn from "../assets/images/dark-more-btn.svg";
 import "../assets/css/HeaderWeb.scss";
 
 function Header() {
-  const [moreCategories, setMoreCategories] = React.useState("");
+  const [moreCategories, setMoreCategories] = React.useState<boolean>(false);
+
+  const handleMoreBtnClick = () => {
+    setMoreCategories(moreCategories ? false : true);
+  };
 
   return (
     <header className="Header-header">
@@ -39,10 +43,14 @@ function Header() {
               </Link>
             </li>
             <li>
-              <Link href="#" underline="hover">
+              <Link href="#" underline="always">
                 {"More"}
               </Link>
-              <button type="button" className="icon-btn">
+              <button
+                type="button"
+                className="icon-btn"
+                onClick={handleMoreBtnClick}
+              >
                 <img src={darkMoreBtn} />
               </button>
             </li>
