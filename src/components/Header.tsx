@@ -4,24 +4,55 @@ import darkLogo from "../assets/images/dark-logo.svg";
 import darkLightThemeBtn from "../assets/images/dark-light-theme-icon.svg";
 import darkDarkThemeBtn from "../assets/images/dark-dark-theme-icon.svg";
 import darkMoreBtn from "../assets/images/dark-more-btn.svg";
+import darkMenuBtn from "../assets/images/dark-mobile-menu-icon.svg";
+import darkCloseBtn from "../assets/images/dark-close-btn.svg";
 import "../assets/css/HeaderWeb.scss";
 
 function Header() {
   const [moreCategories, setMoreCategories] = React.useState<boolean>(false);
+  const [mobileCategories, setMobileCategories] =
+    React.useState<boolean>(false);
 
   const handleMoreBtnClick = () => {
     setMoreCategories(moreCategories ? false : true);
   };
 
+  const handleMenuBtnClick = () => {
+    setMobileCategories(mobileCategories ? false : true);
+    setMoreCategories(false);
+  };
+
   return (
     <header className="Header-header">
-      <ul className="d-flex justify-content-around">
-        <li>
+      <ul className="d-flex justify-content-around flex-wrap">
+        <li className="Header-logo">
           <img src={darkLogo} />
         </li>
         <li className="d-flex flex-column gap-30 justify-content-center align-items-center">
           <h1>NewsFeed</h1>
-          <ul className="d-flex gap-46 justify-content-center align-items-center">
+          <button
+            type="button"
+            className="icon-btn Header-menu-btn"
+            onClick={handleMenuBtnClick}
+          >
+            <img src={darkMenuBtn} alt="Hamburger menu button" />
+          </button>
+          <Link
+            href="#"
+            underline="always"
+            className="Header-mobile-filters-btn"
+          >
+            {"Filters"}
+          </Link>
+          <ul
+            className={`gap-30 align-items-center ${
+              mobileCategories
+                ? "Header-categories-list-mobile"
+                : window.innerWidth < 500
+                ? "d-none"
+                : "d-flex justify-content-center"
+            }`}
+          >
             <li>
               <Link href="#" underline="hover">
                 {"All"}
@@ -43,7 +74,7 @@ function Header() {
               </Link>
             </li>
             <li>
-              <Link href="#" underline="always">
+              <Link href="#" underline="always" onClick={handleMoreBtnClick}>
                 {"More"}
               </Link>
               <button
@@ -64,13 +95,14 @@ function Header() {
             <img src={darkDarkThemeBtn} alt="Dark theme icon" />
           </button>
         </li>
-        <li className="Header-mobile-filters-btn">
-          <Link href="#" underline="always">
-            {"Filters"}
-          </Link>
-        </li>
       </ul>
-      <ul className="HeaderWeb-more-categories-dropdown d-none">
+      <ul
+        className={
+          moreCategories
+            ? "Header-more-categories-dropdown d-flex flex-column gap-30"
+            : "d-none"
+        }
+      >
         <li>
           <Link href="#" underline="hover">
             {"Science"}
@@ -91,6 +123,13 @@ function Header() {
             {"Entertainment"}
           </Link>
         </li>
+        <button type="button" className="icon-btn" onClick={handleMoreBtnClick}>
+          <img
+            src={darkCloseBtn}
+            alt="Close button"
+            className="Header-more-categories-dropdown-close-btn"
+          />
+        </button>
       </ul>
     </header>
   );
