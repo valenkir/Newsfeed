@@ -13,7 +13,7 @@ import "./assets/css/App.scss";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RouterLayout />}>
-      <Route path="/" element={<Landing />} />
+      <Route path="" element={<Landing />} />
     </Route>
   )
 );
