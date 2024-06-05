@@ -1,137 +1,143 @@
 import React from "react";
-import Link from "@mui/material/Link";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import Container from "@mui/material/Container";
+import MenuItem from "@mui/material/MenuItem";
+import MenuIcon from "@mui/icons-material/Menu";
+import IconButton from "@mui/material/IconButton";
+import ModeNightIcon from "@mui/icons-material/ModeNight";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import HeaderMenu from "./HeaderMenu";
 import darkLogo from "../assets/images/dark-logo.svg";
-import darkLightThemeBtn from "../assets/images/dark-light-theme-icon.svg";
-import darkDarkThemeBtn from "../assets/images/dark-dark-theme-icon.svg";
 import darkMoreBtn from "../assets/images/dark-more-btn.svg";
-import darkMenuBtn from "../assets/images/dark-mobile-menu-icon.svg";
 import darkCloseBtn from "../assets/images/dark-close-btn.svg";
-import "../assets/css/HeaderWeb.scss";
+import { DarkModeOutlined } from "@mui/icons-material";
+import { ClassNames } from "@emotion/react";
 
 function Header() {
-  const [moreCategories, setMoreCategories] = React.useState<boolean>(false);
-  const [mobileCategories, setMobileCategories] =
-    React.useState<boolean>(false);
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+    null
+  );
 
-  const handleMoreBtnClick = () => {
-    setMoreCategories(moreCategories ? false : true);
+  const filters = ["All", "General", "Business", "Tech", "More"];
+  const webMenuStyles = { display: { md: "flex", xs: "none" } };
+
+  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElNav(event.currentTarget);
   };
 
-  const handleMenuBtnClick = () => {
-    setMobileCategories(mobileCategories ? false : true);
-    setMoreCategories(false);
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
   };
 
   return (
-    <header className="Header-header">
-      <ul className="d-flex justify-content-around flex-wrap">
-        <li className="Header-logo">
-          <img src={darkLogo} />
-        </li>
-        <li className="d-flex flex-column gap-30 justify-content-center align-items-center">
-          <h1>NewsFeed</h1>
-          <button
-            type="button"
-            className="icon-btn Header-menu-btn"
-            onClick={handleMenuBtnClick}
-          >
-            <img src={darkMenuBtn} alt="Hamburger menu button" />
-          </button>
-          <Link
-            href="#"
-            underline="always"
-            className="Header-mobile-filters-btn"
-          >
-            {"Filters"}
-          </Link>
-          <ul
-            className={`gap-30 align-items-center ${
-              mobileCategories
-                ? "Header-categories-list-mobile"
-                : window.innerWidth < 500
-                ? "d-none"
-                : "d-flex justify-content-center"
-            }`}
-          >
-            <li>
-              <Link href="#" underline="hover">
-                {"All"}
-              </Link>
-            </li>
-            <li>
-              <Link href="#" underline="hover">
-                {"General"}
-              </Link>
-            </li>
-            <li>
-              <Link href="#" underline="hover">
-                {"Business"}
-              </Link>
-            </li>
-            <li>
-              <Link href="#" underline="hover">
-                {"Tech"}
-              </Link>
-            </li>
-            <li>
-              <Link href="#" underline="always" onClick={handleMoreBtnClick}>
-                {"More"}
-              </Link>
-              <button
-                type="button"
-                className="icon-btn"
-                onClick={handleMoreBtnClick}
+    <div>
+      <AppBar position="static">
+        <Container maxWidth="xl">
+          <Toolbar disableGutters sx={{ p: 2 }}>
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: {
+                  xs: "flex",
+                  md: "none",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  gap: 10,
+                },
+              }}
+            >
+              <Typography>NewsFeed</Typography>
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  display: {
+                    xs: "flex",
+                    md: "none",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: 2,
+                  },
+                }}
               >
-                <img src={darkMoreBtn} />
-              </button>
-            </li>
-          </ul>
-        </li>
-        <li className="d-flex">
-          <button type="button" className="icon-btn">
-            <img src={darkLightThemeBtn} alt="Light theme icon" />
-          </button>
-          <button type="button" className="icon-btn">
-            <img src={darkDarkThemeBtn} alt="Dark theme icon" />
-          </button>
-        </li>
-      </ul>
-      <ul
-        className={
-          moreCategories
-            ? "Header-more-categories-dropdown d-flex flex-column gap-30"
-            : "d-none"
-        }
-      >
-        <li>
-          <Link href="#" underline="hover">
-            {"Science"}
-          </Link>
-        </li>
-        <li>
-          <Link href="#" underline="hover">
-            {"Sports"}
-          </Link>
-        </li>
-        <li>
-          <Link href="#" underline="hover">
-            {"Health"}
-          </Link>
-        </li>
-        <li>
-          <Link href="#" underline="hover">
-            {"Entertainment"}
-          </Link>
-        </li>
-        <button type="button" className="icon-btn" onClick={handleMoreBtnClick}>
-          <img
-            src={darkCloseBtn}
-            alt="Close button"
-            className="Header-more-categories-dropdown-close-btn"
-          />
-        </button>
-      </ul>
-    </header>
+                <IconButton
+                  size="large"
+                  edge="start"
+                  color="inherit"
+                  aria-label="menu"
+                  onClick={handleOpenNavMenu}
+                  sx={{ mr: 2 }}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Menu
+                  id="menu-header"
+                  anchorEl={anchorElNav}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                  }}
+                  open={Boolean(anchorElNav)}
+                  onClose={handleCloseNavMenu}
+                  sx={{
+                    display: { xs: "block", md: "none" },
+                  }}
+                >
+                  <HeaderMenu
+                    filters={filters}
+                    btnColor="black"
+                    clickHandler={handleCloseNavMenu}
+                  />
+                </Menu>
+                <LightModeIcon sx={{ fontSize: 36 }} />
+                <ModeNightIcon sx={{ fontSize: 36 }} />
+              </Box>
+            </Box>
+
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: {
+                  xs: "none",
+                  md: "flex",
+                },
+                justifyContent: "space-around",
+                alignItems: "center",
+              }}
+            >
+              <img src={darkLogo} alt="NewsFeed logo" />
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Typography>NewsFeed</Typography>
+                <HeaderMenu
+                  filters={filters}
+                  btnColor="white"
+                  styles={webMenuStyles}
+                />
+              </Box>
+              <LightModeIcon sx={{ fontSize: 36 }} />
+              <ModeNightIcon sx={{ fontSize: 36 }} />
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+    </div>
   );
 }
 
