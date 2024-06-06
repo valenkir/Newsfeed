@@ -11,7 +11,6 @@ function RouterLayout() {
       <header>
         <Header />
       </header>
-
       <main>
         <Outlet></Outlet>
       </main>

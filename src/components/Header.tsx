@@ -5,17 +5,12 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import Container from "@mui/material/Container";
-import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
 import IconButton from "@mui/material/IconButton";
 import ModeNightIcon from "@mui/icons-material/ModeNight";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import HeaderMenu from "./HeaderMenu";
 import darkLogo from "../assets/images/dark-logo.svg";
-import darkMoreBtn from "../assets/images/dark-more-btn.svg";
-import darkCloseBtn from "../assets/images/dark-close-btn.svg";
-import { DarkModeOutlined } from "@mui/icons-material";
-import { ClassNames } from "@emotion/react";
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
