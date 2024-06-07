@@ -6,7 +6,7 @@ import HeadlinesList from "../components/HeadlinesList";
 function Landing() {
   return (
     <Box sx={{ m: 5 }}>
-      <Typography variant="h4">Headlines</Typography>
+      <Typography variant="h4">Top Headlines of the Day</Typography>
       <HeadlinesList />
     </Box>
   );

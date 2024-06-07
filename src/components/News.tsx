@@ -6,13 +6,21 @@ import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import moment from "moment";
-import { Headline } from "./HeadlinesList";
+import { INews } from "../interfaces/NewsInterfaces";
 
 type Props = {
-  headlineNews: Headline;
+  headlineNews: INews;
 };
 
-function HeadlineNews({ headlineNews }: Props) {
+const cropContent = (content: string): string => {
+  if (content.endsWith("]")) {
+    const cropAt = content.lastIndexOf("[");
+    return content.substring(0, cropAt);
+  }
+  return content;
+};
+
+function News({ headlineNews }: Props) {
   return (
     <Card sx={{ minHeight: 500 }}>
       <CardHeader
@@ -28,18 +36,21 @@ function HeadlineNews({ headlineNews }: Props) {
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           {headlineNews.description ||
-            headlineNews.content ||
-            "The decription might have been removed"}
+            cropContent(
+              headlineNews.content || "Go to the source to view the news"
+            )}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 3 }}>
           {headlineNews.author || ""}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <Button variant="text">Go to Source</Button>
+        <Button variant="text" href={`${headlineNews.url}`}>
+          Go to Source
+        </Button>
       </CardActions>
     </Card>
   );
 }
 
-export default HeadlineNews;
+export default News;
