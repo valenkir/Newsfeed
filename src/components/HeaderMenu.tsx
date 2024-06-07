@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -7,12 +8,14 @@ import { SxProps, Theme } from "@mui/material/styles";
 
 interface headerMenuProps {
   filters: string[];
+  moreFilters: string[];
   btnColor: string;
   styles?: SxProps<Theme>;
   clickHandler?: any;
 }
 function HeaderMenu({
   filters,
+  moreFilters,
   btnColor,
   styles = [],
   clickHandler,
@@ -53,6 +56,8 @@ function HeaderMenu({
             key={filter}
             sx={{ my: 2, color: btnColor, display: "block" }}
             onClick={clickHandler}
+            component={NavLink}
+            to={`${filter}`}
           >
             {filter}
           </Button>
@@ -67,10 +72,16 @@ function HeaderMenu({
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleMoreCategoriesClose}>Science</MenuItem>
-        <MenuItem onClick={handleMoreCategoriesClose}>Sports</MenuItem>
-        <MenuItem onClick={handleMoreCategoriesClose}>Health</MenuItem>
-        <MenuItem onClick={handleMoreCategoriesClose}>Entertainment</MenuItem>
+        {moreFilters.map((filter, index) => (
+          <MenuItem
+            onClick={handleMoreCategoriesClose}
+            key={index}
+            component={NavLink}
+            to={`${filter}`}
+          >
+            {filter}
+          </MenuItem>
+        ))}
       </Menu>
     </Box>
   );
