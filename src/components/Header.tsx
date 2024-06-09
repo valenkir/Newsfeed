@@ -10,22 +10,30 @@ import IconButton from "@mui/material/IconButton";
 import ModeNightIcon from "@mui/icons-material/ModeNight";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import HeaderMenu from "./HeaderMenu";
+import { PageContext } from "../context/Page";
+import { PageContextType } from "../interfaces/ContextInterfaces";
 import darkLogo from "../assets/images/dark-logo.svg";
 
-const filters = ["All", "General", "Business", "Tech", "More"];
-const moreFilters = ["Science", "Health", "Sports", "Entertainment"];
+export const filters = ["All", "General", "Business", "Technology", "More"];
+export const moreFilters = ["Science", "Health", "Sports", "Entertainment"];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
+  const { page, changePage } = React.useContext<PageContextType>(PageContext);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(null);
+  };
+
+  const handleClickFilter = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElNav(null);
+    changePage(1);
   };
 
   const webMenuStyles = { display: { md: "flex", xs: "none" } };
@@ -93,7 +101,7 @@ function Header() {
                     filters={filters}
                     moreFilters={moreFilters}
                     btnColor="black"
-                    clickHandler={handleCloseNavMenu}
+                    clickHandler={handleClickFilter}
                   />
                 </Menu>
                 <LightModeIcon sx={{ fontSize: 36 }} />
@@ -128,6 +136,7 @@ function Header() {
                   moreFilters={moreFilters}
                   btnColor="white"
                   styles={webMenuStyles}
+                  clickHandler={handleClickFilter}
                 />
               </Box>
               <LightModeIcon sx={{ fontSize: 36 }} />
@@ -139,26 +148,5 @@ function Header() {
     </div>
   );
 }
-
-export const fetchNewsCategoryData = async (category: string): Promise<any> => {
-  const categoryData = category.toLowerCase();
-  let response;
-  if (categoryData === "all") {
-    response = await fetch(
-      "https://newsapi.org/v2/everything?apiKey=277ed278fe75469599c2f901d25015b3"
-    );
-  } else if (filters.includes(category) || moreFilters.includes(category)) {
-    response = await fetch(
-      `https://newsapi.org/v2/top-headlines?category=${categoryData}&pageSize=50&apiKey=277ed278fe75469599c2f901d25015b3`
-    );
-  } else {
-    response = await fetch(
-      "https://newsapi.org/v2/everything?apiKey=277ed278fe75469599c2f901d25015b3"
-    );
-  }
-
-  const data = await response?.json();
-  return data;
-};
 
 export default Header;

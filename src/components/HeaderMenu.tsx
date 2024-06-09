@@ -5,6 +5,8 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { SxProps, Theme } from "@mui/material/styles";
+import { PageContext } from "../context/Page";
+import { PageContextType } from "../interfaces/ContextInterfaces";
 
 interface headerMenuProps {
   filters: string[];
@@ -22,6 +24,8 @@ function HeaderMenu({
 }: headerMenuProps) {
   const [moreCategories, setMoreCategories] =
     React.useState<null | HTMLElement>(null);
+  const { page, changePage } = React.useContext<PageContextType>(PageContext);
+
   const openMoreCategories = Boolean(moreCategories);
 
   const handleMoreCategoriesClick = (
@@ -32,6 +36,7 @@ function HeaderMenu({
 
   const handleMoreCategoriesClose = () => {
     setMoreCategories(null);
+    changePage(1);
   };
 
   return (
@@ -57,7 +62,7 @@ function HeaderMenu({
             sx={{ my: 2, color: btnColor, display: "block" }}
             onClick={clickHandler}
             component={NavLink}
-            to={`${filter}`}
+            to={`feed/${filter}`}
           >
             {filter}
           </Button>
@@ -77,7 +82,7 @@ function HeaderMenu({
             onClick={handleMoreCategoriesClose}
             key={index}
             component={NavLink}
-            to={`${filter}`}
+            to={`feed/${filter}`}
           >
             {filter}
           </MenuItem>

@@ -30,7 +30,7 @@ function News({ headlineNews }: Props) {
       <CardMedia
         component="img"
         height="194"
-        image={headlineNews.urlToImage || "./missing-news.jpg"}
+        image={headlineNews.urlToImage || "../missing-news.jpg"}
         alt={headlineNews.title}
       />
       <CardContent>
