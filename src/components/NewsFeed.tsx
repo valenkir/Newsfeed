@@ -8,7 +8,12 @@ export interface newsData {
 
 function NewsFeed({ news }: newsData) {
   return (
-    <Grid container spacing={2} justifyContent={"center"}>
+    <Grid
+      container
+      spacing={2}
+      justifyContent={"center"}
+      sx={{ mt: { md: 0, xs: 20 } }}
+    >
       {news
         .filter((news: INews) => news.title !== "[Removed]")
         .map((news: INews, index: number) => {
