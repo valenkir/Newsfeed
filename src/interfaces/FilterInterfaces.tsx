@@ -12,7 +12,7 @@ export type CategoryFilter =
 
 export interface IOtherFilters {
   country?: string;
-  from?: Date;
-  to?: Date;
+  from?: string;
+  to?: string;
   q?: string;
 }

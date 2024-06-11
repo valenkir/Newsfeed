@@ -9,7 +9,6 @@ import {
 import Landing from "./pages/Landing";
 import RouterLayout from "./RouterLayout";
 import { fetchData } from "./components/HeadlinesList";
-import "./assets/css/utilities.scss";
 import "./assets/css/App.scss";
 import FeedLayout from "./FeedLayout";
 import Feed from "./pages/Feed";

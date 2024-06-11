@@ -45,7 +45,6 @@ function Feed() {
         setNews(res.articles);
         setNewsTotalResult(res.totalResults);
         setLoading(false);
-        console.log(page);
       });
     } catch (err) {
       let message: string;
@@ -54,7 +53,7 @@ function Feed() {
       } else message = String(error);
       setError(message);
     }
-  }, [categoryFilter, page]);
+  }, [categoryFilter, page, otherFilters]);
 
   return (
     <Box>
@@ -66,7 +65,10 @@ function Feed() {
       )}
       {news.length > 0 && (
         <Box sx={{ display: "flex", mt: 5, mb: 5 }}>
-          <Filter category={categoryFilter.filter || "All"} />
+          <Filter
+            category={categoryFilter.filter || "All"}
+            setOtherFilters={setOtherFilters}
+          />
           <Box>
             <NewsFeed news={news} />
             {newsTotalResults > pageLimit && (
@@ -82,10 +84,16 @@ function Feed() {
         </Box>
       )}
       {news.length === 0 && !loading && (
-        <Box sx={{ textAlign: "center" }}>
-          <Typography color="text.secondary" variant="h3">
-            No results were found
-          </Typography>
+        <Box>
+          <Filter
+            category={categoryFilter.filter || "All"}
+            setOtherFilters={setOtherFilters}
+          />
+          <Box sx={{ textAlign: "center", mt: 5 }}>
+            <Typography color="text.secondary" variant="h3">
+              No results were found
+            </Typography>
+          </Box>
         </Box>
       )}
     </Box>
@@ -111,16 +119,19 @@ export const fetchNewsCategoryData = async (
   pageLimit: number
 ): Promise<any> => {
   let response;
+  const query = setFetchQuery(otherFilters);
   if (category === "All" || "") {
-    response = await fetch(
-      `https://newsapi.org/v2/everything?q=a&language=en&pageSize=${pageLimit}&page=${page}&apiKey=${process.env.REACT_APP_NEWS_KEY}`
-    );
+    response = query
+      ? await fetch(
+          `https://newsapi.org/v2/everything?language=en&pageSize=${pageLimit}&page=${page}&${query}apiKey=${process.env.REACT_APP_NEWS_KEY}`
+        )
+      : await fetch(
+          `https://newsapi.org/v2/everything?q=a&language=en&pageSize=${pageLimit}&page=${page}&apiKey=${process.env.REACT_APP_NEWS_KEY}`
+        );
   } else if (
     (filters.includes(category) || moreFilters.includes(category)) &&
     category !== "All"
   ) {
-    const query = setFetchQuery(otherFilters);
-    //console.log(query);
     response = query
       ? await fetch(
           `https://newsapi.org/v2/top-headlines?category=${category.toLowerCase()}&pageSize=${pageLimit}&page=${page}&${query}apiKey=${

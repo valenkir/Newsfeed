@@ -12,22 +12,68 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Box from "@mui/material/Box";
+import { IOtherFilters } from "../interfaces/FilterInterfaces";
+
+interface Props {
+  category: string;
+  setOtherFilters: React.Dispatch<React.SetStateAction<IOtherFilters>>;
+}
+
+interface FilterCountries {
+  ua: string;
+  us: string;
+  lv: string;
+  bg: string;
+}
 
 const countries = { ua: "Ukraine", us: "USA", lv: "Latvia", bg: "Bulgaria" };
 
-function Filter({ category }: { category: string }) {
+function Filter({ category, setOtherFilters }: Props) {
   const today = moment();
   const [country, setCountry] = React.useState<string>("");
-  const [dateValue, setDateValue] = React.useState<moment.Moment | null>(today);
+  const [dateValue, setDateValue] = React.useState<moment.Moment | null>();
+  const [searchQuery, setSearchQuery] = React.useState<string>("");
+
+  const parseFilter = () => {
+    const filterObj: IOtherFilters = {};
+    if (category === "All" && dateValue) {
+      const date = moment(dateValue).format("MM DD YYYY");
+      console.log(dateValue);
+      console.log(date);
+      filterObj.from = date;
+      filterObj.to = date;
+    } else if (country) {
+      const countryCode = Object.keys(countries).find(
+        (key) => countries[key as keyof FilterCountries] === country
+      );
+      filterObj.country = countryCode;
+    }
+
+    if (searchQuery.trim()) {
+      filterObj.q = searchQuery.trim();
+    }
+
+    return filterObj;
+  };
+
   const handleCountryChange = (event: SelectChangeEvent) => {
     setCountry(event.target.value);
+  };
+
+  const handleSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleApplyClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    setOtherFilters(parseFilter());
   };
 
   return (
     <Paper
       sx={{
         minWidth: 1 / 5,
-        width: { xs: "100%" },
+        width: { xs: "100%", md: 1 / 5 },
         maxHeight: 350,
         alignItems: "center",
         justifyContent: "center",
@@ -38,8 +84,9 @@ function Filter({ category }: { category: string }) {
         position: { md: "static", xs: "absolute" },
         flexWrap: { md: "nowrap", xs: "wrap" },
         top: "15%",
-        p: { xs: 3, md: 0 },
+        p: { xs: 3 },
         boxSizing: "border-box",
+        mt: 2,
       }}
       elevation={3}
     >
@@ -69,6 +116,7 @@ function Filter({ category }: { category: string }) {
           id="search-field"
           label="Search by phrase"
           variant="standard"
+          onInput={handleSearchInput}
           sx={{ width: 2 / 3 }}
         />
         {category === "All" && (
@@ -119,7 +167,9 @@ function Filter({ category }: { category: string }) {
           gap: 3,
         }}
       >
-        <Button variant="contained">Apply</Button>
+        <Button variant="contained" onClick={handleApplyClick}>
+          Apply
+        </Button>
         <Button variant="outlined">Cancel</Button>
       </Box>
     </Paper>
