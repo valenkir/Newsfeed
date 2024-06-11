@@ -6,6 +6,8 @@ import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Pagination from "@mui/material/Pagination";
 import NewsFeed from "../components/NewsFeed";
+import HeadlineFilter from "../components/HeadlineFilter";
+import AllFilter from "../components/AllFilter";
 import { INews } from "../interfaces/NewsInterfaces";
 import { IOtherFilters } from "../interfaces/FilterInterfaces";
 import { PageContext } from "../context/Page";
@@ -64,19 +66,21 @@ function Feed() {
         />
       )}
       {news.length > 0 && (
-        <Box>
-          <NewsFeed news={news} />
-          {newsTotalResults > pageLimit && (
-            <Box
-              sx={{ display: "flex", justifyContent: "center", mt: 5, mb: 5 }}
-            >
-              <Pagination
-                count={getNumberOfPages()}
-                onChange={handlePageChange}
-                page={page}
-              />
-            </Box>
-          )}
+        <Box sx={{ display: "flex", mt: 5, mb: 5 }}>
+          {categoryFilter.filter === "All" && <AllFilter />}
+          {categoryFilter.filter !== "All" && <HeadlineFilter />}
+          <Box>
+            <NewsFeed news={news} />
+            {newsTotalResults > pageLimit && (
+              <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
+                <Pagination
+                  count={getNumberOfPages()}
+                  onChange={handlePageChange}
+                  page={page}
+                />
+              </Box>
+            )}
+          </Box>
         </Box>
       )}
       {news.length === 0 && !loading && (

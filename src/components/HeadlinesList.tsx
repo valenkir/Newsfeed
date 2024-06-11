@@ -43,7 +43,7 @@ function HeadlinesList() {
 
 export const fetchData = async (): Promise<any> => {
   const response = await fetch(
-    `https://newsapi.org/v2/top-headlines?country=us&category=general&pageSize=7&apiKey=${process.env.REACT_APP_NEWS_KEY}`
+    `https://newsapi.org/v2/top-headlines?country=us&category=general&pageSize=6&apiKey=${process.env.REACT_APP_NEWS_KEY}`
   );
   const data = await response.json();
   return data;
