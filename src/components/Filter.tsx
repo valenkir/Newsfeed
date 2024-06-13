@@ -77,19 +77,34 @@ function Filter({ category, setOtherFilters, otherFilters }: Props) {
 
   const handleApplyClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
+    console.log(
+      `prevSearchQuery: ${prevSearchQuery}, otherFilters.q: ${
+        otherFilters?.q
+      }, are equal: ${prevSearchQuery!}`
+    );
     if (
-      prevCountry !== country ||
-      prevDateValue !== dateValue ||
-      prevSearchQuery !== searchQuery
+      prevCountry !== otherFilters?.country ||
+      prevDateValue !== otherFilters?.from ||
+      prevSearchQuery !== otherFilters?.q
     ) {
       const params = parseFilter();
       setSearchParams(params as URLSearchParams);
       setOtherFilters(params as OtherFilters);
+      if (params.countryName) {
+        setCountry(params.countryName);
+      }
+      if (params.from) {
+        setDateValue(moment(params.from));
+      }
+      if (params.q) {
+        setSearchQuery(params.q);
+      }
     }
   };
 
   const handleCancelClick = (event: React.MouseEvent<HTMLElement>) => {
-    if (searchParams.size || !Object.values(otherFilters as OtherFilters)) {
+    event.preventDefault();
+    if (searchParams.size || Object.values(otherFilters as OtherFilters)) {
       const params = {};
       setSearchParams(params as URLSearchParams);
       setOtherFilters(params as OtherFilters);
@@ -145,7 +160,7 @@ function Filter({ category, setOtherFilters, otherFilters }: Props) {
           id="search-field"
           label="Search by phrase"
           variant="standard"
-          value={otherFilters?.q || ""}
+          value={searchQuery || otherFilters?.q || ""}
           onInput={handleSearchInput}
           sx={{ width: 2 / 3 }}
         />

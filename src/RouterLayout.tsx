@@ -5,6 +5,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { QParamsProvider } from "./context/QParams";
+import Footer from "./components/Footer";
 
 function RouterLayout() {
   return (
@@ -16,6 +17,9 @@ function RouterLayout() {
         <main>
           <Outlet></Outlet>
         </main>
+        <footer>
+          <Footer />
+        </footer>
       </div>
     </QParamsProvider>
   );

@@ -72,7 +72,9 @@ function Feed() {
           <Box>
             <NewsFeed news={news} />
             {newsTotalResults > pageLimit && (
-              <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
+              <Box
+                sx={{ display: "flex", justifyContent: "center", mt: 5, mb: 5 }}
+              >
                 <Pagination
                   count={getNumberOfPages()}
                   onChange={handlePageChange}
@@ -142,7 +144,6 @@ export const fetchNewsCategoryData = async (
   searchParams: URLSearchParams
 ): Promise<any> => {
   const query = setFetchQuery(searchParams, category);
-  console.log(query);
   let response;
   if (category === "All" || "") {
     response = await fetch(
