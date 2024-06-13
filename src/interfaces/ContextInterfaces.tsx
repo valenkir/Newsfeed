@@ -1,4 +1,4 @@
-export interface PageContextType {
-  page: number;
-  changePage: (pageNumber: number) => void;
+export interface QParamsContextType {
+  searchParams: URLSearchParams;
+  setSearchParams: React.Dispatch<React.SetStateAction<URLSearchParams>>;
 }

@@ -10,9 +10,11 @@ export type CategoryFilter =
   | "Sports"
   | "Entertainment";
 
-export interface IOtherFilters {
+export interface OtherFilters {
   country?: string;
   from?: string;
   to?: string;
   q?: string;
+  countryName?: string;
+  page?: number;
 }

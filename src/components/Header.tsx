@@ -10,8 +10,8 @@ import IconButton from "@mui/material/IconButton";
 import ModeNightIcon from "@mui/icons-material/ModeNight";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import HeaderMenu from "./HeaderMenu";
-import { PageContext } from "../context/Page";
-import { PageContextType } from "../interfaces/ContextInterfaces";
+import useSearchParamsContext from "../hooks/useSearchParamsContext";
+import { OtherFilters } from "../interfaces/FilterInterfaces";
 import darkLogo from "../assets/images/dark-logo.svg";
 
 export const filters = ["All", "General", "Business", "Technology", "More"];
@@ -21,7 +21,7 @@ function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
-  const { page, changePage } = React.useContext<PageContextType>(PageContext);
+  const { searchParams, setSearchParams } = useSearchParamsContext();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -33,7 +33,13 @@ function Header() {
 
   const handleClickFilter = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(null);
-    changePage(1);
+    if (event.currentTarget.textContent === "All") {
+      searchParams.delete("country");
+      setSearchParams(searchParams);
+    }
+    const page: OtherFilters = {};
+    page.page = 1;
+    setSearchParams(page as URLSearchParams);
   };
 
   const webMenuStyles = { display: { md: "flex", xs: "none" } };

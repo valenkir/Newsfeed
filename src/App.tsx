@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Route,
   RouterProvider,
@@ -12,7 +11,6 @@ import { fetchData } from "./components/HeadlinesList";
 import "./assets/css/App.scss";
 import FeedLayout from "./FeedLayout";
 import Feed from "./pages/Feed";
-import { PageProvider } from "./context/Page";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -27,11 +25,7 @@ const router = createBrowserRouter(
 );
 
 function App() {
-  return (
-    <PageProvider>
-      <RouterProvider router={router} />;
-    </PageProvider>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

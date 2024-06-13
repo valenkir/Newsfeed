@@ -12,11 +12,16 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Box from "@mui/material/Box";
-import { IOtherFilters } from "../interfaces/FilterInterfaces";
+import usePrevious from "../hooks/usePrevious";
+import { OtherFilters } from "../interfaces/FilterInterfaces";
+import useSearchParamsContext from "../hooks/useSearchParamsContext";
 
 interface Props {
   category: string;
-  setOtherFilters: React.Dispatch<React.SetStateAction<IOtherFilters>>;
+  setOtherFilters: React.Dispatch<
+    React.SetStateAction<OtherFilters | undefined>
+  >;
+  otherFilters: OtherFilters | undefined;
 }
 
 interface FilterCountries {
@@ -28,18 +33,20 @@ interface FilterCountries {
 
 const countries = { ua: "Ukraine", us: "USA", lv: "Latvia", bg: "Bulgaria" };
 
-function Filter({ category, setOtherFilters }: Props) {
+function Filter({ category, setOtherFilters, otherFilters }: Props) {
   const today = moment();
+  const { searchParams, setSearchParams } = useSearchParamsContext();
   const [country, setCountry] = React.useState<string>("");
   const [dateValue, setDateValue] = React.useState<moment.Moment | null>();
   const [searchQuery, setSearchQuery] = React.useState<string>("");
+  const prevCountry = usePrevious(country);
+  const prevDateValue = usePrevious(dateValue);
+  const prevSearchQuery = usePrevious(searchQuery);
 
   const parseFilter = () => {
-    const filterObj: IOtherFilters = {};
+    const filterObj: OtherFilters = {};
     if (category === "All" && dateValue) {
-      const date = moment(dateValue).format("MM DD YYYY");
-      console.log(dateValue);
-      console.log(date);
+      const date = moment(dateValue).format("YYYY-MM-DD");
       filterObj.from = date;
       filterObj.to = date;
     } else if (country) {
@@ -47,26 +54,48 @@ function Filter({ category, setOtherFilters }: Props) {
         (key) => countries[key as keyof FilterCountries] === country
       );
       filterObj.country = countryCode;
+      filterObj.countryName = country;
     }
 
     if (searchQuery.trim()) {
       filterObj.q = searchQuery.trim();
     }
 
+    filterObj.page = 1;
     return filterObj;
   };
 
   const handleCountryChange = (event: SelectChangeEvent) => {
     setCountry(event.target.value);
+    setOtherFilters({ countryName: event.target.value });
   };
 
   const handleSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
+    setOtherFilters({ q: event.target.value });
   };
 
   const handleApplyClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
-    setOtherFilters(parseFilter());
+    if (
+      prevCountry !== country ||
+      prevDateValue !== dateValue ||
+      prevSearchQuery !== searchQuery
+    ) {
+      const params = parseFilter();
+      setSearchParams(params as URLSearchParams);
+      setOtherFilters(params as OtherFilters);
+    }
+  };
+
+  const handleCancelClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (searchParams.size || !Object.values(otherFilters as OtherFilters)) {
+      const params = {};
+      setSearchParams(params as URLSearchParams);
+      setOtherFilters(params as OtherFilters);
+      setCountry("");
+      setSearchQuery("");
+    }
   };
 
   return (
@@ -116,6 +145,7 @@ function Filter({ category, setOtherFilters }: Props) {
           id="search-field"
           label="Search by phrase"
           variant="standard"
+          value={otherFilters?.q || ""}
           onInput={handleSearchInput}
           sx={{ width: 2 / 3 }}
         />
@@ -123,9 +153,15 @@ function Filter({ category, setOtherFilters }: Props) {
           <LocalizationProvider dateAdapter={AdapterMoment}>
             <DatePicker
               label="MM/DD/YYYY"
-              value={dateValue}
+              defaultValue={moment(otherFilters?.from)}
               maxDate={today}
-              onChange={(newValue) => setDateValue(newValue)}
+              onChange={(newValue) => {
+                setDateValue(newValue);
+                setOtherFilters({
+                  from: moment(newValue).format("YYYY-MM-DD"),
+                  to: moment(newValue).format("YYYY-MM-DD"),
+                });
+              }}
               sx={{ width: 2 / 3 }}
             />
           </LocalizationProvider>
@@ -137,7 +173,7 @@ function Filter({ category, setOtherFilters }: Props) {
               labelId="select-country-label"
               id="select-country"
               label="Country"
-              value={country}
+              value={country || otherFilters?.countryName || ""}
               onChange={handleCountryChange}
             >
               <MenuItem value="">
@@ -170,7 +206,9 @@ function Filter({ category, setOtherFilters }: Props) {
         <Button variant="contained" onClick={handleApplyClick}>
           Apply
         </Button>
-        <Button variant="outlined">Cancel</Button>
+        <Button variant="outlined" onClick={handleCancelClick}>
+          Cancel
+        </Button>
       </Box>
     </Paper>
   );

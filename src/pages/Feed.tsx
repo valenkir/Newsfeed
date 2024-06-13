@@ -8,19 +8,20 @@ import Pagination from "@mui/material/Pagination";
 import NewsFeed from "../components/NewsFeed";
 import Filter from "../components/Filter";
 import { INews } from "../interfaces/NewsInterfaces";
-import { IOtherFilters } from "../interfaces/FilterInterfaces";
-import { PageContext } from "../context/Page";
-import { PageContextType } from "../interfaces/ContextInterfaces";
+import { OtherFilters } from "../interfaces/FilterInterfaces";
+import useSearchParamsContext from "../hooks/useSearchParamsContext";
 
 function Feed() {
   const pageLimit = 20;
   const categoryFilter = useParams();
   const [news, setNews] = React.useState<INews[]>([]);
-  const [otherFilters, setOtherFilters] = React.useState<IOtherFilters>({});
+  const [otherFilters, setOtherFilters] = React.useState<
+    OtherFilters | undefined
+  >();
   const [newsTotalResults, setNewsTotalResult] = React.useState<number>(0);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string>();
-  const { page, changePage } = React.useContext<PageContextType>(PageContext);
+  const { searchParams, setSearchParams } = useSearchParamsContext();
 
   const getNumberOfPages = () => {
     return Math.ceil(newsTotalResults / pageLimit);
@@ -30,30 +31,28 @@ function Feed() {
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    changePage(value);
+    searchParams.set("page", value.toString());
+    setSearchParams(searchParams);
   };
 
   React.useEffect(() => {
     setLoading(true);
-    try {
-      fetchNewsCategoryData(
-        categoryFilter.filter || "",
-        otherFilters,
-        page,
-        pageLimit
-      ).then((res) => {
+    fetchNewsCategoryData(categoryFilter.filter || "", pageLimit, searchParams)
+      .then((res) => {
         setNews(res.articles);
         setNewsTotalResult(res.totalResults);
         setLoading(false);
+        setError("");
+      })
+      .catch((err) => {
+        let message: string;
+        if (err instanceof Error) {
+          message = err.message;
+        } else message = String(error);
+        setError(message);
+        setLoading(false);
       });
-    } catch (err) {
-      let message: string;
-      if (err instanceof Error) {
-        message = err.message;
-      } else message = String(error);
-      setError(message);
-    }
-  }, [categoryFilter, page, otherFilters]);
+  }, [categoryFilter, searchParams]);
 
   return (
     <Box>
@@ -63,11 +62,12 @@ function Feed() {
           size={100}
         />
       )}
-      {news.length > 0 && (
+      {!error && news.length > 0 && (
         <Box sx={{ display: "flex", mt: 5, mb: 5 }}>
           <Filter
             category={categoryFilter.filter || "All"}
             setOtherFilters={setOtherFilters}
+            otherFilters={otherFilters}
           />
           <Box>
             <NewsFeed news={news} />
@@ -76,7 +76,7 @@ function Feed() {
                 <Pagination
                   count={getNumberOfPages()}
                   onChange={handlePageChange}
-                  page={page}
+                  page={Number(searchParams.get("page")) || 1 || undefined}
                 />
               </Box>
             )}
@@ -88,6 +88,7 @@ function Feed() {
           <Filter
             category={categoryFilter.filter || "All"}
             setOtherFilters={setOtherFilters}
+            otherFilters={otherFilters}
           />
           <Box sx={{ textAlign: "center", mt: 5 }}>
             <Typography color="text.secondary" variant="h3">
@@ -96,61 +97,75 @@ function Feed() {
           </Box>
         </Box>
       )}
+      {error && (
+        <Box sx={{ textAlign: "center", mt: { xs: 40, md: 1 } }}>
+          <Typography color="text.secondary" variant="h3">
+            Oops! Something went wrong.
+          </Typography>
+        </Box>
+      )}
     </Box>
   );
 }
-const setFetchQuery = (otherFilters: IOtherFilters): string => {
-  if (!Object.keys(otherFilters).length) {
-    return "";
-  } else {
-    let query = "";
-    Object.keys(otherFilters).forEach((key: string) => {
-      const value = otherFilters[key as keyof IOtherFilters];
+const setFetchQuery = (
+  searchParams: URLSearchParams,
+  category: string
+): string => {
+  const template: OtherFilters = {
+    country: "",
+    from: "",
+    to: "",
+    q: "",
+    countryName: "",
+    page: 0,
+  };
+
+  let query = "";
+  Object.keys(template).forEach((key: string) => {
+    const value = searchParams.get(key);
+    if (value) {
       query += `${key}=${value}&`;
-    });
-    return query;
-  }
+    } else if (category === "All" && key === "q") {
+      query += "q=a&";
+    } else if (category !== "All" && key === "country") {
+      query += "country=us&";
+    } else if (key === "page") {
+      query += "page=1&";
+    }
+  });
+  return query;
 };
 
 export const fetchNewsCategoryData = async (
   category: string,
-  otherFilters: IOtherFilters,
-  page: number,
-  pageLimit: number
+  pageLimit: number,
+  searchParams: URLSearchParams
 ): Promise<any> => {
+  const query = setFetchQuery(searchParams, category);
+  console.log(query);
   let response;
-  const query = setFetchQuery(otherFilters);
   if (category === "All" || "") {
-    response = query
-      ? await fetch(
-          `https://newsapi.org/v2/everything?language=en&pageSize=${pageLimit}&page=${page}&${query}apiKey=${process.env.REACT_APP_NEWS_KEY}`
-        )
-      : await fetch(
-          `https://newsapi.org/v2/everything?q=a&language=en&pageSize=${pageLimit}&page=${page}&apiKey=${process.env.REACT_APP_NEWS_KEY}`
-        );
+    response = await fetch(
+      `https://newsapi.org/v2/everything?language=en&pageSize=${pageLimit}&${query}apiKey=${process.env.REACT_APP_NEWS_KEY}`
+    );
   } else if (
     (filters.includes(category) || moreFilters.includes(category)) &&
     category !== "All"
   ) {
-    response = query
-      ? await fetch(
-          `https://newsapi.org/v2/top-headlines?category=${category.toLowerCase()}&pageSize=${pageLimit}&page=${page}&${query}apiKey=${
-            process.env.REACT_APP_NEWS_KEY
-          }`
-        )
-      : await fetch(
-          `https://newsapi.org/v2/top-headlines?category=${category.toLowerCase()}&country=us&pageSize=${pageLimit}&page=${page}&apiKey=${
-            process.env.REACT_APP_NEWS_KEY
-          }`
-        );
-  } else {
     response = await fetch(
-      `https://newsapi.org/v2/everything?q=a&language=en&pageSize=${pageLimit}&apiKey=${process.env.REACT_APP_NEWS_KEY}`
+      `https://newsapi.org/v2/top-headlines?category=${category.toLowerCase()}&pageSize=${pageLimit}&${query}apiKey=${
+        process.env.REACT_APP_NEWS_KEY
+      }`
     );
   }
 
   const data = await response?.json();
-  return data;
+  const fetchError = new Error("Data wasn't fetched");
+  if (data.status === "ok") {
+    return data;
+  } else {
+    throw fetchError;
+  }
 };
 
 export default Feed;
