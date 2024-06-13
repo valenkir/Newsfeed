@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -13,9 +14,10 @@ import HeaderMenu from "./HeaderMenu";
 import useSearchParamsContext from "../hooks/useSearchParamsContext";
 import { OtherFilters } from "../interfaces/FilterInterfaces";
 import darkLogo from "../assets/images/dark-logo.svg";
+import { Avatar, Button } from "@mui/material";
 
-export const filters = ["All", "General", "Business", "Technology", "More"];
-export const moreFilters = ["Science", "Health", "Sports", "Entertainment"];
+export const filters = ["All", "Business", "Technology", "Science", "More"];
+export const moreFilters = ["Health", "Sports", "Entertainment"];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -33,10 +35,6 @@ function Header() {
 
   const handleClickFilter = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(null);
-    if (event.currentTarget.textContent === "All") {
-      searchParams.delete("country");
-      setSearchParams(searchParams);
-    }
     const page: OtherFilters = {};
     page.page = 1;
     setSearchParams(page as URLSearchParams);
@@ -126,7 +124,11 @@ function Header() {
                 alignItems: "center",
               }}
             >
-              <img src={darkLogo} alt="NewsFeed logo" />
+              <Button
+                startIcon={
+                  <Avatar src={darkLogo} component={NavLink} to={`/`} />
+                }
+              ></Button>
               <Box
                 sx={{
                   flexGrow: 1,

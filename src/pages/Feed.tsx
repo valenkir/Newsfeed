@@ -127,12 +127,10 @@ const setFetchQuery = (
     const value = searchParams.get(key);
     if (value) {
       query += `${key}=${value}&`;
-    } else if (category === "All" && key === "q") {
-      query += "q=a&";
-    } else if (category !== "All" && key === "country") {
-      query += "country=us&";
     } else if (key === "page") {
       query += "page=1&";
+    } else if (key === "country") {
+      query += "country=us&";
     }
   });
   return query;
@@ -147,7 +145,7 @@ export const fetchNewsCategoryData = async (
   let response;
   if (category === "All" || "") {
     response = await fetch(
-      `https://newsapi.org/v2/everything?language=en&pageSize=${pageLimit}&${query}apiKey=${process.env.REACT_APP_NEWS_KEY}`
+      `https://newsapi.org/v2/top-headlines?pageSize=${pageLimit}&${query}apiKey=${process.env.REACT_APP_NEWS_KEY}`
     );
   } else if (
     (filters.includes(category) || moreFilters.includes(category)) &&

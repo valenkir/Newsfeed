@@ -45,11 +45,7 @@ function Filter({ category, setOtherFilters, otherFilters }: Props) {
 
   const parseFilter = () => {
     const filterObj: OtherFilters = {};
-    if (category === "All" && dateValue) {
-      const date = moment(dateValue).format("YYYY-MM-DD");
-      filterObj.from = date;
-      filterObj.to = date;
-    } else if (country) {
+    if (country) {
       const countryCode = Object.keys(countries).find(
         (key) => countries[key as keyof FilterCountries] === country
       );
@@ -164,48 +160,27 @@ function Filter({ category, setOtherFilters, otherFilters }: Props) {
           onInput={handleSearchInput}
           sx={{ width: 2 / 3 }}
         />
-        {category === "All" && (
-          <LocalizationProvider dateAdapter={AdapterMoment}>
-            <DatePicker
-              label="MM/DD/YYYY"
-              defaultValue={moment(otherFilters?.from)}
-              maxDate={today}
-              onChange={(newValue) => {
-                setDateValue(newValue);
-                setOtherFilters({
-                  from: moment(newValue).format("YYYY-MM-DD"),
-                  to: moment(newValue).format("YYYY-MM-DD"),
-                });
-              }}
-              sx={{ width: 2 / 3 }}
-            />
-          </LocalizationProvider>
-        )}
-        {category !== "All" && (
-          <FormControl variant="standard" sx={{ m: 1, width: 2 / 3 }}>
-            <InputLabel id="select-country-label">Country</InputLabel>
-            <Select
-              labelId="select-country-label"
-              id="select-country"
-              label="Country"
-              value={country || otherFilters?.countryName || ""}
-              onChange={handleCountryChange}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              {Object.values(countries).map(
-                (country: string, index: number) => {
-                  return (
-                    <MenuItem value={country} key={index}>
-                      {country}
-                    </MenuItem>
-                  );
-                }
-              )}
-            </Select>
-          </FormControl>
-        )}
+        <FormControl variant="standard" sx={{ m: 1, width: 2 / 3 }}>
+          <InputLabel id="select-country-label">Country</InputLabel>
+          <Select
+            labelId="select-country-label"
+            id="select-country"
+            label="Country"
+            value={country || otherFilters?.countryName || ""}
+            onChange={handleCountryChange}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            {Object.values(countries).map((country: string, index: number) => {
+              return (
+                <MenuItem value={country} key={index}>
+                  {country}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
       </Box>
       <Box
         sx={{
