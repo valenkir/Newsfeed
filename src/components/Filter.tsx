@@ -1,5 +1,4 @@
 import React from "react";
-import moment from "moment";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
@@ -8,21 +7,10 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Box from "@mui/material/Box";
 import usePrevious from "../hooks/usePrevious";
 import { OtherFilters } from "../interfaces/FilterInterfaces";
 import useSearchParamsContext from "../hooks/useSearchParamsContext";
-
-interface Props {
-  category: string;
-  setOtherFilters: React.Dispatch<
-    React.SetStateAction<OtherFilters | undefined>
-  >;
-  otherFilters: OtherFilters | undefined;
-}
 
 interface FilterCountries {
   ua: string;
@@ -33,28 +21,27 @@ interface FilterCountries {
 
 const countries = { ua: "Ukraine", us: "USA", lv: "Latvia", bg: "Bulgaria" };
 
-function Filter({ category, setOtherFilters, otherFilters }: Props) {
-  const today = moment();
+function Filter() {
   const { searchParams, setSearchParams } = useSearchParamsContext();
-  const [country, setCountry] = React.useState<string>("");
-  const [dateValue, setDateValue] = React.useState<moment.Moment | null>();
-  const [searchQuery, setSearchQuery] = React.useState<string>("");
-  const prevCountry = usePrevious(country);
-  const prevDateValue = usePrevious(dateValue);
-  const prevSearchQuery = usePrevious(searchQuery);
+  const [otherFilters, setOtherFilters] = React.useState<
+    OtherFilters | undefined
+  >();
+  const prevCountry = usePrevious(otherFilters?.countryName);
+  const prevSearchQuery = usePrevious(otherFilters?.q);
 
   const parseFilter = () => {
     const filterObj: OtherFilters = {};
-    if (country) {
+    if (otherFilters?.countryName) {
       const countryCode = Object.keys(countries).find(
-        (key) => countries[key as keyof FilterCountries] === country
+        (key) =>
+          countries[key as keyof FilterCountries] === otherFilters?.countryName
       );
       filterObj.country = countryCode;
-      filterObj.countryName = country;
+      filterObj.countryName = otherFilters?.countryName;
     }
 
-    if (searchQuery.trim()) {
-      filterObj.q = searchQuery.trim();
+    if (otherFilters?.q) {
+      filterObj.q = otherFilters?.q;
     }
 
     filterObj.page = 1;
@@ -62,39 +49,27 @@ function Filter({ category, setOtherFilters, otherFilters }: Props) {
   };
 
   const handleCountryChange = (event: SelectChangeEvent) => {
-    setCountry(event.target.value);
-    setOtherFilters({ countryName: event.target.value });
+    const currentFilters: OtherFilters = { ...otherFilters };
+    currentFilters.countryName = event.target.value;
+    setOtherFilters(currentFilters);
   };
 
   const handleSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-    setOtherFilters({ q: event.target.value });
+    const currentFilters: OtherFilters = { ...otherFilters };
+    const value = event.target.value.trim();
+    currentFilters.q = value;
+    setOtherFilters(currentFilters);
   };
 
   const handleApplyClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
-    console.log(
-      `prevSearchQuery: ${prevSearchQuery}, otherFilters.q: ${
-        otherFilters?.q
-      }, are equal: ${prevSearchQuery!}`
-    );
     if (
-      prevCountry !== otherFilters?.country ||
-      prevDateValue !== otherFilters?.from ||
+      prevCountry !== otherFilters?.countryName ||
       prevSearchQuery !== otherFilters?.q
     ) {
       const params = parseFilter();
       setSearchParams(params as URLSearchParams);
       setOtherFilters(params as OtherFilters);
-      if (params.countryName) {
-        setCountry(params.countryName);
-      }
-      if (params.from) {
-        setDateValue(moment(params.from));
-      }
-      if (params.q) {
-        setSearchQuery(params.q);
-      }
     }
   };
 
@@ -103,9 +78,11 @@ function Filter({ category, setOtherFilters, otherFilters }: Props) {
     if (searchParams.size || Object.values(otherFilters as OtherFilters)) {
       const params = {};
       setSearchParams(params as URLSearchParams);
-      setOtherFilters(params as OtherFilters);
-      setCountry("");
-      setSearchQuery("");
+      setOtherFilters({
+        q: "",
+        countryName: "",
+        country: "",
+      });
     }
   };
 
@@ -156,7 +133,7 @@ function Filter({ category, setOtherFilters, otherFilters }: Props) {
           id="search-field"
           label="Search by phrase"
           variant="standard"
-          value={searchQuery || otherFilters?.q || ""}
+          value={otherFilters?.q || ""}
           onInput={handleSearchInput}
           sx={{ width: 2 / 3 }}
         />
@@ -166,7 +143,7 @@ function Filter({ category, setOtherFilters, otherFilters }: Props) {
             labelId="select-country-label"
             id="select-country"
             label="Country"
-            value={country || otherFilters?.countryName || ""}
+            value={otherFilters?.countryName || ""}
             onChange={handleCountryChange}
           >
             <MenuItem value="">

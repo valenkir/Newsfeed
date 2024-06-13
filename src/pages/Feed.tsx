@@ -15,9 +15,6 @@ function Feed() {
   const pageLimit = 20;
   const categoryFilter = useParams();
   const [news, setNews] = React.useState<INews[]>([]);
-  const [otherFilters, setOtherFilters] = React.useState<
-    OtherFilters | undefined
-  >();
   const [newsTotalResults, setNewsTotalResult] = React.useState<number>(0);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string>();
@@ -31,15 +28,19 @@ function Feed() {
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    searchParams.set("page", value.toString());
-    setSearchParams(searchParams);
+    const page: OtherFilters = {};
+    page.page = value;
+    setSearchParams(page as URLSearchParams);
   };
 
   React.useEffect(() => {
     setLoading(true);
     fetchNewsCategoryData(categoryFilter.filter || "", pageLimit, searchParams)
       .then((res) => {
-        setNews(res.articles);
+        const validNews = res.articles.filter(
+          (news: INews) => news.title !== "[Removed]"
+        );
+        setNews(validNews);
         setNewsTotalResult(res.totalResults);
         setLoading(false);
         setError("");
@@ -63,12 +64,8 @@ function Feed() {
         />
       )}
       {!error && news.length > 0 && (
-        <Box sx={{ display: "flex", mt: 5, mb: 5 }}>
-          <Filter
-            category={categoryFilter.filter || "All"}
-            setOtherFilters={setOtherFilters}
-            otherFilters={otherFilters}
-          />
+        <Box sx={{ display: "flex", mt: 5, mb: 10 }}>
+          <Filter />
           <Box>
             <NewsFeed news={news} />
             {newsTotalResults > pageLimit && (
@@ -86,17 +83,26 @@ function Feed() {
         </Box>
       )}
       {news.length === 0 && !loading && (
-        <Box>
-          <Filter
-            category={categoryFilter.filter || "All"}
-            setOtherFilters={setOtherFilters}
-            otherFilters={otherFilters}
-          />
-          <Box sx={{ textAlign: "center", mt: 5 }}>
-            <Typography color="text.secondary" variant="h3">
-              No results were found
-            </Typography>
-          </Box>
+        <Box
+          sx={{
+            display: { md: "flex", xs: "block" },
+            gap: 40,
+            mt: 5,
+            width: { xs: "100%", md: "auto" },
+          }}
+        >
+          <Filter />
+          <Typography
+            color="text.secondary"
+            variant="h3"
+            alignSelf={"center"}
+            sx={{
+              mt: { xs: 35, md: 0 },
+              textAlign: { xs: "center" },
+            }}
+          >
+            No results were found
+          </Typography>
         </Box>
       )}
       {error && (
@@ -109,16 +115,10 @@ function Feed() {
     </Box>
   );
 }
-const setFetchQuery = (
-  searchParams: URLSearchParams,
-  category: string
-): string => {
+const setFetchQuery = (searchParams: URLSearchParams): string => {
   const template: OtherFilters = {
     country: "",
-    from: "",
-    to: "",
     q: "",
-    countryName: "",
     page: 0,
   };
 
@@ -127,10 +127,17 @@ const setFetchQuery = (
     const value = searchParams.get(key);
     if (value) {
       query += `${key}=${value}&`;
-    } else if (key === "page") {
-      query += "page=1&";
-    } else if (key === "country") {
-      query += "country=us&";
+    } else {
+      switch (key) {
+        case "page":
+          query += "page=1&";
+          break;
+        case "country":
+          query += "country=us&";
+          break;
+        default:
+          break;
+      }
     }
   });
   return query;
@@ -141,7 +148,7 @@ export const fetchNewsCategoryData = async (
   pageLimit: number,
   searchParams: URLSearchParams
 ): Promise<any> => {
-  const query = setFetchQuery(searchParams, category);
+  const query = setFetchQuery(searchParams);
   let response;
   if (category === "All" || "") {
     response = await fetch(

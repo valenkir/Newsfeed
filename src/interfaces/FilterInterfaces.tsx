@@ -12,8 +12,6 @@ export type CategoryFilter =
 
 export interface OtherFilters {
   country?: string;
-  from?: string;
-  to?: string;
   q?: string;
   countryName?: string;
   page?: number;

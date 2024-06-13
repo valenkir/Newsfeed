@@ -22,7 +22,7 @@ const cropContent = (content: string): string => {
 
 function News({ headlineNews }: Props) {
   return (
-    <Card sx={{ minHeight: 500 }}>
+    <Card sx={{ minHeight: 600 }}>
       <CardHeader
         title={headlineNews.title}
         subheader={moment(headlineNews.publishedAt).format("MMMM D YYYY")}
