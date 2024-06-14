@@ -4,11 +4,17 @@ export const darkNewsTheme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#357266",
+      main: "#00796B",
+      light: "#B2DFDB",
       contrastText: "#fff",
     },
-    secondary: {
-      main: "#74C3B3",
+    text: {
+      primary: "#212121",
+      secondary: "#757575",
+    },
+    background: {
+      default: "#fff",
+      paper: "#fff",
     },
   },
   typography: {
@@ -17,7 +23,7 @@ export const darkNewsTheme = createTheme({
       fontFamily: "Righteous-Regular",
     },
     h4: {
-      fontSize: "2.875rem",
+      fontSize: "1.875rem",
       fontFamily: "Righteous-Regular",
     },
   },
@@ -36,7 +42,12 @@ export const lightNewsTheme = createTheme({
   },
   typography: {
     h1: {
-      fontSize: "2.25rem",
+      fontSize: "2rem",
+      fontFamily: "Righteous-Regular",
+    },
+    h4: {
+      fontSize: "1.875rem",
+      fontFamily: "Righteous-Regular",
     },
   },
 });

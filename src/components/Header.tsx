@@ -11,13 +11,15 @@ import IconButton from "@mui/material/IconButton";
 import ModeNightIcon from "@mui/icons-material/ModeNight";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { OtherFilters } from "../interfaces/FilterInterfaces";
-import darkLogo from "../assets/images/dark-logo.svg";
 import { Avatar, Button } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { useThemeContext } from "../context/Theme";
 import HeaderMenu from "./HeaderMenu";
 import useSearchParamsContext from "../hooks/useSearchParamsContext";
+import { darkNewsTheme } from "../themes/ThemeOptions";
+import darkLogo from "../assets/images/dark-logo.svg";
+import lightLogo from "../assets/images/light-logo.svg";
 
 export const filters = ["All", "Business", "Technology", "Science", "More"];
 export const moreFilters = ["Health", "Sports", "Entertainment"];
@@ -79,7 +81,9 @@ function Header() {
                 },
               }}
             >
-              <Typography variant="h1">NewsFeed</Typography>
+              <Typography variant="h1" color="primary.contrastText">
+                NewsFeed
+              </Typography>
               <Box
                 sx={{
                   flexGrow: 1,
@@ -157,7 +161,12 @@ function Header() {
             >
               <Button
                 startIcon={
-                  <Avatar src={darkLogo} component={NavLink} to={`/`} />
+                  <Avatar
+                    src={theme === darkNewsTheme ? darkLogo : lightLogo}
+                    component={NavLink}
+                    to={`/`}
+                    sx={{ width: 60, height: 60 }}
+                  />
                 }
               ></Button>
               <Box
@@ -169,7 +178,9 @@ function Header() {
                   alignItems: "center",
                 }}
               >
-                <Typography variant="h1">NewsFeed</Typography>
+                <Typography variant="h1" color="primary.contrastText">
+                  NewsFeed
+                </Typography>
                 <HeaderMenu
                   filters={filters}
                   moreFilters={moreFilters}
