@@ -63,7 +63,7 @@ function Feed() {
         />
       )}
       {!error && news.length > 0 && (
-        <Box sx={{ ml: "20%", mt: "2%" }}>
+        <Box sx={{ ml: { md: "20%", xs: 0 }, mt: { md: "2%", xs: "35%" } }}>
           <NewsFeed news={news} />
           {newsTotalResults > pageLimit && (
             <Box

@@ -18,9 +18,16 @@ interface FilterCountries {
   us: string;
   lv: string;
   bg: string;
+  au: string;
 }
 
-const countries = { ua: "Ukraine", us: "USA", lv: "Latvia", bg: "Bulgaria" };
+const countries = {
+  ua: "Ukraine",
+  us: "USA",
+  lv: "Latvia",
+  bg: "Bulgaria",
+  au: "Australia",
+};
 
 function Filter() {
   const { searchParams, setSearchParams } = useSearchParamsContext();
@@ -110,7 +117,7 @@ function Filter() {
         flexDirection: { md: "column", xs: "row" },
         position: { xs: "absolute" },
         flexWrap: { md: "nowrap", xs: "wrap" },
-        top: "20%",
+        top: { md: "20%", xs: "15%" },
         left: { xs: 0 },
         p: { xs: 3 },
         boxSizing: "border-box",
