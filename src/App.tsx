@@ -17,8 +17,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<RouterLayout />}>
       <Route path="" element={<Landing />} loader={fetchData} />
       <Route path="feed" element={<FeedLayout />}>
-        <Route path="" element={<Navigate to="All" replace />} />
-        <Route path=":filter" element={<Feed />} />
+        <Route path="" element={<Feed />} />
       </Route>
     </Route>
   )

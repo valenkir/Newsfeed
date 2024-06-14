@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -35,9 +35,15 @@ function Header() {
 
   const handleClickFilter = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(null);
-    const page: OtherFilters = {};
-    page.page = 1;
-    setSearchParams(page as URLSearchParams);
+    const filter: OtherFilters = {};
+    filter.page = 1;
+    const categoryValue = event.currentTarget.textContent;
+    if (categoryValue !== "All" && categoryValue) {
+      filter.category = categoryValue;
+    } else if (categoryValue === "All") {
+      filter.category = "general";
+    }
+    setSearchParams(filter as URLSearchParams);
   };
 
   const webMenuStyles = { display: { md: "flex", xs: "none" } };

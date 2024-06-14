@@ -11,6 +11,7 @@ import Box from "@mui/material/Box";
 import usePrevious from "../hooks/usePrevious";
 import { OtherFilters } from "../interfaces/FilterInterfaces";
 import useSearchParamsContext from "../hooks/useSearchParamsContext";
+import { copyCurrentSearchParams } from "../helperFunctions";
 
 interface FilterCountries {
   ua: string;
@@ -68,8 +69,17 @@ function Filter() {
       prevSearchQuery !== otherFilters?.q
     ) {
       const params = parseFilter();
-      setSearchParams(params as URLSearchParams);
-      setOtherFilters(params as OtherFilters);
+      const currentFilters = copyCurrentSearchParams(searchParams);
+      if (!params.q && currentFilters.q) {
+        delete currentFilters.q;
+      }
+      if (!params.countryName && currentFilters.countryName) {
+        delete currentFilters.countryName;
+        delete currentFilters.country;
+      }
+
+      setSearchParams({ ...currentFilters, ...params } as URLSearchParams);
+      setOtherFilters({ ...currentFilters, ...params } as OtherFilters);
     }
   };
 
@@ -98,9 +108,10 @@ function Filter() {
         gap: 3,
         pt: 4,
         flexDirection: { md: "column", xs: "row" },
-        position: { md: "static", xs: "absolute" },
+        position: { xs: "absolute" },
         flexWrap: { md: "nowrap", xs: "wrap" },
-        top: "15%",
+        top: "20%",
+        left: { xs: 0 },
         p: { xs: 3 },
         boxSizing: "border-box",
         mt: 2,
@@ -174,7 +185,7 @@ function Filter() {
           Apply
         </Button>
         <Button variant="outlined" onClick={handleCancelClick}>
-          Cancel
+          Clear
         </Button>
       </Box>
     </Paper>

@@ -34,11 +34,17 @@ function HeaderMenu({
     setMoreCategories(event.currentTarget);
   };
 
-  const handleMoreCategoriesClose = () => {
+  const handleCategoryClick = (event: React.MouseEvent<HTMLElement>) => {
     setMoreCategories(null);
-    const page: OtherFilters = {};
-    page.page = 1;
-    setSearchParams(page as URLSearchParams);
+    const filter: OtherFilters = {};
+    filter.page = 1;
+    const categoryValue = event.currentTarget.textContent;
+    if (categoryValue !== "All" && categoryValue) {
+      filter.category = categoryValue;
+    } else if (categoryValue === "All") {
+      filter.category = "general";
+    }
+    setSearchParams(filter as URLSearchParams);
   };
 
   return (
@@ -64,7 +70,7 @@ function HeaderMenu({
             sx={{ my: 2, color: btnColor, display: "block" }}
             onClick={clickHandler}
             component={NavLink}
-            to={`feed/${filter}`}
+            to={`feed?page=1&category=${filter === "All" ? "general" : filter}`}
           >
             {filter}
           </Button>
@@ -74,17 +80,17 @@ function HeaderMenu({
         id="more-categories-menu"
         anchorEl={moreCategories}
         open={openMoreCategories}
-        onClose={handleMoreCategoriesClose}
+        onClose={handleCategoryClick}
         MenuListProps={{
           "aria-labelledby": "basic-button",
         }}
       >
         {moreFilters.map((filter, index) => (
           <MenuItem
-            onClick={handleMoreCategoriesClose}
+            onClick={handleCategoryClick}
             key={index}
             component={NavLink}
-            to={`feed/${filter}`}
+            to={`feed?page=1&category=${filter}`}
           >
             {filter}
           </MenuItem>

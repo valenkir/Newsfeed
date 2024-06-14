@@ -15,5 +15,5 @@ export interface OtherFilters {
   q?: string;
   countryName?: string;
   page?: number;
-  category?: string;
+  category?: string | null;
 }
