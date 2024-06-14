@@ -14,15 +14,13 @@ function NewsFeed({ news }: newsData) {
       justifyContent={"center"}
       sx={{ mt: { md: 0, xs: 20 } }}
     >
-      {news
-        .filter((news: INews) => news.title !== "[Removed]")
-        .map((news: INews, index: number) => {
-          return (
-            <Grid xs={10} md={5} key={index} item={true}>
-              <News headlineNews={news} />
-            </Grid>
-          );
-        })}
+      {news.map((news: INews, index: number) => {
+        return (
+          <Grid xs={10} md={5} key={index} item={true}>
+            <News headlineNews={news} />
+          </Grid>
+        );
+      })}
     </Grid>
   );
 }

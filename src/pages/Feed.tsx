@@ -10,6 +10,7 @@ import Filter from "../components/Filter";
 import { INews } from "../interfaces/NewsInterfaces";
 import { OtherFilters } from "../interfaces/FilterInterfaces";
 import useSearchParamsContext from "../hooks/useSearchParamsContext";
+import usePrevious from "../hooks/usePrevious";
 
 function Feed() {
   const pageLimit = 20;
