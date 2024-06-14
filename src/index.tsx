@@ -1,11 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createTheme } from "@mui/material";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { darkNewsThemeOptions, lightNewsThemeOptions } from "./themes/Theme";
 import "./assets/css/reset.css";
-import "./index.css";
+import "./assets/css/fonts.scss";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

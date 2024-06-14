@@ -10,11 +10,14 @@ import MenuIcon from "@mui/icons-material/Menu";
 import IconButton from "@mui/material/IconButton";
 import ModeNightIcon from "@mui/icons-material/ModeNight";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import HeaderMenu from "./HeaderMenu";
-import useSearchParamsContext from "../hooks/useSearchParamsContext";
 import { OtherFilters } from "../interfaces/FilterInterfaces";
 import darkLogo from "../assets/images/dark-logo.svg";
 import { Avatar, Button } from "@mui/material";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { useThemeContext } from "../context/Theme";
+import HeaderMenu from "./HeaderMenu";
+import useSearchParamsContext from "../hooks/useSearchParamsContext";
 
 export const filters = ["All", "Business", "Technology", "Science", "More"];
 export const moreFilters = ["Health", "Sports", "Entertainment"];
@@ -24,6 +27,7 @@ function Header() {
     null
   );
   const { searchParams, setSearchParams } = useSearchParamsContext();
+  const { theme, changeTheme } = useThemeContext();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -48,11 +52,18 @@ function Header() {
     localStorage.removeItem("q");
   };
 
+  const handleThemeChange = (event: React.MouseEvent<HTMLElement>) => {
+    const themeBtn = event.currentTarget.getAttribute("data-value");
+    if (themeBtn) {
+      changeTheme(themeBtn);
+    }
+  };
+
   const webMenuStyles = { display: { md: "flex", xs: "none" } };
 
   return (
     <div>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ bgcolor: "primary.main" }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters sx={{ p: 2 }}>
             <Box
@@ -68,7 +79,7 @@ function Header() {
                 },
               }}
             >
-              <Typography>NewsFeed</Typography>
+              <Typography variant="h1">NewsFeed</Typography>
               <Box
                 sx={{
                   flexGrow: 1,
@@ -116,8 +127,20 @@ function Header() {
                     clickHandler={handleClickFilter}
                   />
                 </Menu>
-                <LightModeIcon sx={{ fontSize: 36 }} />
-                <ModeNightIcon sx={{ fontSize: 36 }} />
+                <ToggleButtonGroup
+                  color="primary"
+                  value={theme}
+                  exclusive
+                  onChange={handleThemeChange}
+                  aria-label="Platform"
+                >
+                  <ToggleButton value="light" data-value="light">
+                    <LightModeIcon sx={{ fontSize: 36 }} />
+                  </ToggleButton>
+                  <ToggleButton value="dark" data-value="dark">
+                    <ModeNightIcon sx={{ fontSize: 36 }} />
+                  </ToggleButton>
+                </ToggleButtonGroup>
               </Box>
             </Box>
 
@@ -146,7 +169,7 @@ function Header() {
                   alignItems: "center",
                 }}
               >
-                <Typography>NewsFeed</Typography>
+                <Typography variant="h1">NewsFeed</Typography>
                 <HeaderMenu
                   filters={filters}
                   moreFilters={moreFilters}
@@ -155,8 +178,20 @@ function Header() {
                   clickHandler={handleClickFilter}
                 />
               </Box>
-              <LightModeIcon sx={{ fontSize: 36 }} />
-              <ModeNightIcon sx={{ fontSize: 36 }} />
+              <ToggleButtonGroup
+                color="primary"
+                value={theme}
+                exclusive
+                onChange={handleThemeChange}
+                aria-label="Platform"
+              >
+                <ToggleButton value="light" data-value="light">
+                  <LightModeIcon sx={{ fontSize: 36 }} />
+                </ToggleButton>
+                <ToggleButton value="dark" data-value="dark">
+                  <ModeNightIcon sx={{ fontSize: 36 }} />
+                </ToggleButton>
+              </ToggleButtonGroup>
             </Box>
           </Toolbar>
         </Container>
