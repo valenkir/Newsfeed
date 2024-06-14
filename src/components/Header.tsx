@@ -44,6 +44,8 @@ function Header() {
       filter.category = "general";
     }
     setSearchParams(filter as URLSearchParams);
+    localStorage.removeItem("countryName");
+    localStorage.removeItem("q");
   };
 
   const webMenuStyles = { display: { md: "flex", xs: "none" } };

@@ -43,8 +43,12 @@ function HeaderMenu({
       filter.category = categoryValue;
     } else if (categoryValue === "All") {
       filter.category = "general";
+    } else if (!categoryValue) {
+      filter.category = searchParams.get("category");
     }
     setSearchParams(filter as URLSearchParams);
+    localStorage.removeItem("countryName");
+    localStorage.removeItem("q");
   };
 
   return (

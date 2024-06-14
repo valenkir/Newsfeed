@@ -31,6 +31,7 @@ const countries = {
 
 function Filter() {
   const { searchParams, setSearchParams } = useSearchParamsContext();
+  //This one is needed for the IF statement in handleApplyClick and to handle changes in the input fields; changing input fields doesn't work with the localStorage only for some reason
   const [otherFilters, setOtherFilters] = React.useState<
     OtherFilters | undefined
   >();
@@ -39,17 +40,18 @@ function Filter() {
 
   const parseFilter = () => {
     const filterObj: OtherFilters = {};
-    if (otherFilters?.countryName) {
+    if (localStorage.getItem("countryName")) {
       const countryCode = Object.keys(countries).find(
         (key) =>
-          countries[key as keyof FilterCountries] === otherFilters?.countryName
+          countries[key as keyof FilterCountries] ===
+          localStorage.getItem("countryName")
       );
       filterObj.country = countryCode;
-      filterObj.countryName = otherFilters?.countryName;
+      filterObj.countryName = localStorage.getItem("countryName")!;
     }
 
-    if (otherFilters?.q) {
-      filterObj.q = otherFilters?.q;
+    if (localStorage.getItem("q")) {
+      filterObj.q = localStorage.getItem("q")!;
     }
 
     filterObj.page = 1;
@@ -60,6 +62,7 @@ function Filter() {
     const currentFilters: OtherFilters = { ...otherFilters };
     currentFilters.countryName = event.target.value;
     setOtherFilters(currentFilters);
+    localStorage.setItem("countryName", event.target.value);
   };
 
   const handleSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,6 +70,7 @@ function Filter() {
     const value = event.target.value.trim();
     currentFilters.q = value;
     setOtherFilters(currentFilters);
+    localStorage.setItem("q", value);
   };
 
   const handleApplyClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -87,6 +91,9 @@ function Filter() {
 
       setSearchParams({ ...currentFilters, ...params } as URLSearchParams);
       setOtherFilters({ ...currentFilters, ...params } as OtherFilters);
+      console.log(params.q);
+      localStorage.setItem("countryName", params.countryName || "");
+      localStorage.setItem("q", params.q || "");
     }
   };
 
@@ -101,6 +108,8 @@ function Filter() {
         country: "",
       });
     }
+    localStorage.removeItem("countryName");
+    localStorage.removeItem("q");
   };
 
   return (
@@ -151,7 +160,7 @@ function Filter() {
           id="search-field"
           label="Search by phrase"
           variant="standard"
-          value={otherFilters?.q || ""}
+          value={localStorage.getItem("q") || ""}
           onInput={handleSearchInput}
           sx={{ width: 2 / 3 }}
         />
@@ -161,7 +170,7 @@ function Filter() {
             labelId="select-country-label"
             id="select-country"
             label="Country"
-            value={otherFilters?.countryName || ""}
+            value={localStorage.getItem("countryName") || ""}
             onChange={handleCountryChange}
           >
             <MenuItem value="">
