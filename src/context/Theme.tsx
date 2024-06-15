@@ -27,9 +27,17 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     localStorage.setItem("theme", newTheme);
   };
 
+  const getTheme = () => {
+    return localStorage.getItem("theme")
+      ? localStorage.getItem("theme") === "dark"
+        ? darkNewsTheme
+        : lightNewsTheme
+      : theme;
+  };
+
   return (
     <ThemeContext.Provider value={{ theme, changeTheme }}>
-      <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
+      <MuiThemeProvider theme={getTheme()}>{children}</MuiThemeProvider>
     </ThemeContext.Provider>
   );
 };

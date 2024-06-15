@@ -4,8 +4,6 @@ import { useLoaderData } from "react-router-dom";
 import News from "./News";
 import { INews } from "../interfaces/NewsInterfaces";
 
-//TODO: fetch new headlines after 5-mins interval
-
 //if fetch returns data.articles, this interface is not needed; otherwise keep it
 export interface HeadlinesData {
   articles: INews[];

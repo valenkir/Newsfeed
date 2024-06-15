@@ -65,9 +65,12 @@ function Header() {
 
   return (
     <div>
-      <AppBar position="static" sx={{ bgcolor: "primary.main" }}>
+      <AppBar
+        position="static"
+        sx={{ bgcolor: "primary.main", p: 2, boxSizing: "border-box" }}
+      >
         <Container maxWidth="xl">
-          <Toolbar disableGutters sx={{ p: 2 }}>
+          <Toolbar disableGutters>
             <Box
               sx={{
                 flexGrow: 1,
@@ -81,7 +84,12 @@ function Header() {
                 },
               }}
             >
-              <Typography variant="h1" color="primary.contrastText">
+              <Typography
+                variant="h1"
+                color="primary.contrastText"
+                component={NavLink}
+                to={`/`}
+              >
                 NewsFeed
               </Typography>
               <Box
@@ -99,7 +107,7 @@ function Header() {
                 <IconButton
                   size="large"
                   edge="start"
-                  color="inherit"
+                  color="secondary"
                   aria-label="menu"
                   onClick={handleOpenNavMenu}
                   sx={{ mr: 2 }}
@@ -139,10 +147,14 @@ function Header() {
                   aria-label="Platform"
                 >
                   <ToggleButton value="light" data-value="light">
-                    <LightModeIcon sx={{ fontSize: 36 }} />
+                    <LightModeIcon
+                      sx={{ fontSize: 36, color: "primary.contrastText" }}
+                    />
                   </ToggleButton>
                   <ToggleButton value="dark" data-value="dark">
-                    <ModeNightIcon sx={{ fontSize: 36 }} />
+                    <ModeNightIcon
+                      sx={{ fontSize: 36, color: "primary.contrastText" }}
+                    />
                   </ToggleButton>
                 </ToggleButtonGroup>
               </Box>
@@ -162,7 +174,11 @@ function Header() {
               <Button
                 startIcon={
                   <Avatar
-                    src={theme === darkNewsTheme ? darkLogo : lightLogo}
+                    src={
+                      localStorage.getItem("theme") === "dark"
+                        ? darkLogo
+                        : lightLogo
+                    }
                     component={NavLink}
                     to={`/`}
                     sx={{ width: 60, height: 60 }}
@@ -197,10 +213,14 @@ function Header() {
                 aria-label="Platform"
               >
                 <ToggleButton value="light" data-value="light">
-                  <LightModeIcon sx={{ fontSize: 36 }} />
+                  <LightModeIcon
+                    sx={{ fontSize: 36, color: "primary.contrastText" }}
+                  />
                 </ToggleButton>
                 <ToggleButton value="dark" data-value="dark">
-                  <ModeNightIcon sx={{ fontSize: 36 }} />
+                  <ModeNightIcon
+                    sx={{ fontSize: 36, color: "primary.contrastText" }}
+                  />
                 </ToggleButton>
               </ToggleButtonGroup>
             </Box>

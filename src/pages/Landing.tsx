@@ -7,7 +7,7 @@ function Landing() {
   return (
     <Box sx={{ m: 5 }}>
       <Container sx={{ textAlign: "center" }}>
-        <Typography variant="h4" color="primary.main">
+        <Typography variant="h4" color="text.primary">
           Top Headlines of the Day
         </Typography>
       </Container>

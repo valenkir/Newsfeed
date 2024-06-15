@@ -4,17 +4,17 @@ export const darkNewsTheme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#00796B",
+      main: "#357266",
       light: "#B2DFDB",
       contrastText: "#fff",
     },
-    text: {
-      primary: "#212121",
-      secondary: "#757575",
+    secondary: {
+      main: "#fff",
+      contrastText: "#5FCCB7",
     },
-    background: {
-      default: "#fff",
-      paper: "#fff",
+    text: {
+      primary: "#fff",
+      secondary: "#B2DFDB",
     },
   },
   typography: {
@@ -33,13 +33,19 @@ export const lightNewsTheme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#D0EBE6",
-      contrastText: "#2B2D42",
+      main: "#795548",
+      contrastText: "#fff",
     },
     secondary: {
-      main: "#97C4BC",
+      main: "#2B2D42",
+      contrastText: "#795548",
+    },
+    text: {
+      primary: "#381D14",
+      secondary: "#757575",
     },
   },
+
   typography: {
     h1: {
       fontSize: "2rem",

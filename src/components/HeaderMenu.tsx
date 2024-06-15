@@ -64,14 +64,14 @@ function HeaderMenu({
             aria-haspopup="true"
             aria-expanded={openMoreCategories ? "true" : undefined}
             onClick={handleMoreCategoriesClick}
-            sx={{ my: 2, color: btnColor, display: "block" }}
+            sx={{ my: 2, color: "primary.contrastText", display: "block" }}
           >
             {filter}
           </Button>
         ) : (
           <Button
             key={filter}
-            sx={{ my: 2, color: btnColor, display: "block" }}
+            sx={{ my: 2, color: "primary.contrastText", display: "block" }}
             onClick={clickHandler}
             component={NavLink}
             to={`feed?page=1&category=${filter === "All" ? "general" : filter}`}
