@@ -5,20 +5,19 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { SxProps, Theme } from "@mui/material/styles";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import useSearchParamsContext from "../hooks/useSearchParamsContext";
 import { OtherFilters } from "../interfaces/FilterInterfaces";
 
 interface headerMenuProps {
   filters: string[];
   moreFilters: string[];
-  btnColor: string;
   styles?: SxProps<Theme>;
   clickHandler?: any;
 }
 function HeaderMenu({
   filters,
   moreFilters,
-  btnColor,
   styles = [],
   clickHandler,
 }: headerMenuProps) {
@@ -51,6 +50,14 @@ function HeaderMenu({
     localStorage.removeItem("q");
   };
 
+  const setSelectedCategoryStyles = (filter: string) => {
+    console.log(filter, searchParams.get(filter));
+    if (filter === searchParams.get(filter)) {
+      return 1;
+    }
+    return "none";
+  };
+
   return (
     <Box sx={[...(Array.isArray(styles) ? styles : [styles])]}>
       {filters.map((filter, index, arr) =>
@@ -64,14 +71,27 @@ function HeaderMenu({
             aria-haspopup="true"
             aria-expanded={openMoreCategories ? "true" : undefined}
             onClick={handleMoreCategoriesClick}
-            sx={{ my: 2, color: "primary.contrastText", display: "block" }}
+            sx={{
+              my: 2,
+              color: "primary.contrastText",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
             {filter}
+            <ArrowDropDownIcon />
           </Button>
         ) : (
           <Button
             key={filter}
-            sx={{ my: 2, color: "primary.contrastText", display: "block" }}
+            sx={{
+              my: 2,
+              color: "primary.contrastText",
+              display: "block",
+              textAlign: "center",
+              border: setSelectedCategoryStyles(filter),
+            }}
             onClick={clickHandler}
             component={NavLink}
             to={`feed?page=1&category=${filter === "All" ? "general" : filter}`}

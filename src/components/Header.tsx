@@ -17,7 +17,6 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { useThemeContext } from "../context/Theme";
 import HeaderMenu from "./HeaderMenu";
 import useSearchParamsContext from "../hooks/useSearchParamsContext";
-import { darkNewsTheme } from "../themes/ThemeOptions";
 import darkLogo from "../assets/images/dark-logo.svg";
 import lightLogo from "../assets/images/light-logo.svg";
 
@@ -135,7 +134,6 @@ function Header() {
                   <HeaderMenu
                     filters={filters}
                     moreFilters={moreFilters}
-                    btnColor="black"
                     clickHandler={handleClickFilter}
                   />
                 </Menu>
@@ -200,7 +198,6 @@ function Header() {
                 <HeaderMenu
                   filters={filters}
                   moreFilters={moreFilters}
-                  btnColor="white"
                   styles={webMenuStyles}
                   clickHandler={handleClickFilter}
                 />
