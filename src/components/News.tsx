@@ -22,7 +22,7 @@ const cropContent = (content: string): string => {
 
 function News({ headlineNews }: Props) {
   return (
-    <Card sx={{ minHeight: 600 }}>
+    <Card sx={{ minHeight: 500 }}>
       <CardHeader
         title={headlineNews.title}
         subheader={moment(headlineNews.publishedAt).format("MMMM D YYYY")}
@@ -45,7 +45,11 @@ function News({ headlineNews }: Props) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <Button variant="text" href={`${headlineNews.url}`}>
+        <Button
+          variant="text"
+          href={`${headlineNews.url}`}
+          sx={{ color: "secondary.contrastText" }}
+        >
           Go to Source
         </Button>
       </CardActions>

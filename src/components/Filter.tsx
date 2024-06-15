@@ -126,7 +126,7 @@ function Filter() {
         flexDirection: { md: "column", xs: "row" },
         position: { xs: "absolute" },
         flexWrap: { md: "nowrap", xs: "wrap" },
-        top: { md: "20%", xs: "15%" },
+        top: { md: "20%", xs: "18%" },
         left: { xs: 0 },
         p: { xs: 3 },
         boxSizing: "border-box",
@@ -162,7 +162,7 @@ function Filter() {
           variant="standard"
           value={localStorage.getItem("q") || ""}
           onInput={handleSearchInput}
-          sx={{ width: 2 / 3 }}
+          sx={{ width: 2 / 3, borderColor: "text.secondary" }}
         />
         <FormControl variant="standard" sx={{ m: 1, width: 2 / 3 }}>
           <InputLabel id="select-country-label">Country</InputLabel>
@@ -172,6 +172,7 @@ function Filter() {
             label="Country"
             value={localStorage.getItem("countryName") || ""}
             onChange={handleCountryChange}
+            sx={{ borderColor: "text.secondary" }}
           >
             <MenuItem value="">
               <em>None</em>
@@ -200,7 +201,11 @@ function Filter() {
         <Button variant="contained" onClick={handleApplyClick}>
           Apply
         </Button>
-        <Button variant="outlined" onClick={handleCancelClick}>
+        <Button
+          variant="outlined"
+          onClick={handleCancelClick}
+          sx={{ color: "text.secondary", borderColor: "text.secondary" }}
+        >
           Clear
         </Button>
       </Box>
