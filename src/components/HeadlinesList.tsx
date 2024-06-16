@@ -47,7 +47,6 @@ function HeadlinesList() {
           sx={{
             textAlign: "center",
             mt: { md: "15%", sm: "50%", xs: "70%" },
-            ml: { md: "20%" },
           }}
         >
           <Typography color="text.secondary" variant="h3">
