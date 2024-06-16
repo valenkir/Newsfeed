@@ -9,6 +9,8 @@ export interface HeadlinesData {
   articles: INews[];
 }
 
+const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+
 function HeadlinesList() {
   const [headlineNews, setHeadlineNews] = React.useState<INews[]>([]);
 
@@ -46,7 +48,7 @@ function HeadlinesList() {
 
 export const fetchData = async (): Promise<any> => {
   const response = await fetch(
-    `https://newsapi.org/v2/top-headlines?sources=bbc-news&pageSize=6&apiKey=${process.env.REACT_APP_NEWS_KEY}`
+    `${proxyUrl}https://newsapi.org/v2/top-headlines?sources=bbc-news&pageSize=6&apiKey=${process.env.REACT_APP_NEWS_KEY}`
   );
   const data = await response.json();
   return data;
