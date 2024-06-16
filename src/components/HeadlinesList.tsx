@@ -1,6 +1,9 @@
 import React from "react";
+import { useLoaderData, useNavigation } from "react-router-dom";
 import Grid from "@mui/material/Unstable_Grid2";
-import { useLoaderData } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import News from "./News";
 import { INews } from "../interfaces/NewsInterfaces";
 
@@ -17,6 +20,7 @@ function HeadlinesList() {
   //we expect that useLoaderData will return an object that has the 'articles' property which is an array
   const response = useLoaderData() as HeadlinesData;
   const [error, setError] = React.useState<null | string>(null);
+  const navigation = useNavigation();
 
   React.useEffect(() => {
     if (response && response.articles) {
@@ -33,15 +37,34 @@ function HeadlinesList() {
       justifyContent={"center"}
       sx={{ mt: 5, mb: 10 }}
     >
-      {headlineNews
-        .filter((news: INews) => news.title !== "[Removed]")
-        .map((news: INews, index: number) => {
-          return (
-            <Grid xs={10} md={5} key={index}>
-              <News headlineNews={news} />
-            </Grid>
-          );
-        })}
+      {navigation.state === "loading" ? (
+        <CircularProgress
+          sx={{ position: "absolute", top: "40%", left: "50%" }}
+          size={100}
+        />
+      ) : error ? (
+        <Box
+          sx={{
+            textAlign: "center",
+            mt: { md: "15%", sm: "50%", xs: "70%" },
+            ml: { md: "20%" },
+          }}
+        >
+          <Typography color="text.secondary" variant="h3">
+            Oops! Something went wrong.
+          </Typography>
+        </Box>
+      ) : (
+        headlineNews
+          .filter((news: INews) => news.title !== "[Removed]")
+          .map((news: INews, index: number) => {
+            return (
+              <Grid xs={10} md={5} key={index}>
+                <News headlineNews={news} />
+              </Grid>
+            );
+          })
+      )}
     </Grid>
   );
 }
