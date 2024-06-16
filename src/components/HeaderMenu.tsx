@@ -51,7 +51,6 @@ function HeaderMenu({
   };
 
   const setSelectedCategoryStyles = (filter: string) => {
-    console.log(filter, searchParams.get(filter));
     if (filter === searchParams.get(filter)) {
       return 1;
     }

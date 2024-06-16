@@ -91,7 +91,6 @@ function Filter() {
 
       setSearchParams({ ...currentFilters, ...params } as URLSearchParams);
       setOtherFilters({ ...currentFilters, ...params } as OtherFilters);
-      console.log(params.q);
       localStorage.setItem("countryName", params.countryName || "");
       localStorage.setItem("q", params.q || "");
     }
