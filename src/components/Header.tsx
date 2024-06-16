@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -27,7 +27,7 @@ function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
-  const { searchParams, setSearchParams } = useSearchParamsContext();
+  const { setSearchParams } = useSearchParamsContext();
   const { theme, changeTheme } = useThemeContext();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -60,7 +60,9 @@ function Header() {
     }
   };
 
-  const webMenuStyles = { display: { md: "flex", xs: "none" } };
+  const webMenuStyles = {
+    display: { md: "flex", xs: "none" },
+  };
 
   return (
     <div>
@@ -109,7 +111,7 @@ function Header() {
                   color="secondary"
                   aria-label="menu"
                   onClick={handleOpenNavMenu}
-                  sx={{ mr: 2 }}
+                  sx={{ mr: 2, color: "primary.contrastText" }}
                 >
                   <MenuIcon />
                 </IconButton>

@@ -50,11 +50,10 @@ function HeaderMenu({
     localStorage.removeItem("q");
   };
 
-  const setSelectedCategoryStyles = (filter: string) => {
-    if (filter === searchParams.get(filter)) {
-      return 1;
-    }
-    return "none";
+  const setMenuItemsColor = () => {
+    return localStorage.getItem("theme") === "dark"
+      ? "primary.contrastText"
+      : "primary.main";
   };
 
   return (
@@ -72,10 +71,11 @@ function HeaderMenu({
             onClick={handleMoreCategoriesClick}
             sx={{
               my: 2,
-              color: "primary.contrastText",
+              color: { md: "primary.contrastText", xs: setMenuItemsColor() },
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              width: { md: "auto", xs: "100%" },
             }}
           >
             {filter}
@@ -86,10 +86,9 @@ function HeaderMenu({
             key={filter}
             sx={{
               my: 2,
-              color: "primary.contrastText",
+              color: { md: "primary.contrastText", xs: setMenuItemsColor() },
               display: "block",
               textAlign: "center",
-              border: setSelectedCategoryStyles(filter),
             }}
             onClick={clickHandler}
             component={NavLink}

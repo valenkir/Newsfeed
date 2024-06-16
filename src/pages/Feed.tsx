@@ -51,7 +51,7 @@ function Feed() {
         setError(message);
         setLoading(false);
       });
-  }, [searchParams]);
+  }, [searchParams, error]);
 
   return (
     <Box>
@@ -83,7 +83,7 @@ function Feed() {
           )}
         </Box>
       )}
-      {news.length === 0 && !loading && (
+      {news.length === 0 && !loading && !error && (
         <Box textAlign={"center"} mt={"15%"}>
           <Typography
             color="text.secondary"
