@@ -46,7 +46,7 @@ function HeadlinesList() {
         <Box
           sx={{
             textAlign: "center",
-            mt: { md: "15%", sm: "50%", xs: "70%" },
+            mt: { xs: "15%" },
           }}
         >
           <Typography color="text.secondary" variant="h3">
