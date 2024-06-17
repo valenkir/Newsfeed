@@ -27,6 +27,24 @@ export const darkNewsTheme = createTheme({
       fontFamily: "Righteous-Regular",
     },
   },
+  components: {
+    MuiTabs: {
+      styleOverrides: {
+        indicator: {
+          backgroundColor: "#fff",
+        },
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          "&.Mui-selected": {
+            color: "#fff",
+          },
+        },
+      },
+    },
+  },
 });
 
 export const lightNewsTheme = createTheme({

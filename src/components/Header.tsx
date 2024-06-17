@@ -20,8 +20,16 @@ import useSearchParamsContext from "../hooks/useSearchParamsContext";
 import darkLogo from "../assets/images/dark-logo.svg";
 import lightLogo from "../assets/images/light-logo.svg";
 
-export const filters = ["All", "Business", "Technology", "Science", "More"];
-export const moreFilters = ["Health", "Sports", "Entertainment"];
+export const filters = [
+  "All",
+  "Business",
+  "Technology",
+  "Science",
+  "Health",
+  "Sports",
+  "Entertainment",
+];
+//export const moreFilters = ["Health", "Sports", "Entertainment"];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -135,7 +143,6 @@ function Header() {
                 >
                   <HeaderMenu
                     filters={filters}
-                    moreFilters={moreFilters}
                     clickHandler={handleClickFilter}
                   />
                 </Menu>
@@ -199,7 +206,6 @@ function Header() {
                 </Typography>
                 <HeaderMenu
                   filters={filters}
-                  moreFilters={moreFilters}
                   styles={webMenuStyles}
                   clickHandler={handleClickFilter}
                 />
