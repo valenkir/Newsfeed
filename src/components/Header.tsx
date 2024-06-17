@@ -38,7 +38,7 @@ function Header() {
   );
   const { changeTab, setSearchParams, tab } = useSearchParamsContext();
   useResetTabOnNavToLanding();
-  const { theme, changeTheme } = useThemeContext();
+  const { changeTheme } = useThemeContext();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -160,7 +160,7 @@ function Header() {
                 </Menu>
                 <ToggleButtonGroup
                   color="primary"
-                  value={theme}
+                  value="themes"
                   exclusive
                   onChange={handleThemeChange}
                   aria-label="Platform"
@@ -227,7 +227,7 @@ function Header() {
               </Box>
               <ToggleButtonGroup
                 color="primary"
-                value={theme}
+                value="themes"
                 exclusive
                 onChange={handleThemeChange}
                 aria-label="Platform"

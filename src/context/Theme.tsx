@@ -23,8 +23,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   const [theme, setTheme] = useState<Theme>(darkNewsTheme);
 
   const changeTheme = (newTheme: string) => {
-    setTheme(newTheme === "dark" ? darkNewsTheme : lightNewsTheme);
-    localStorage.setItem("theme", newTheme);
+    if (newTheme && newTheme !== localStorage.getItem("theme")) {
+      const themeValue = newTheme === "dark" ? darkNewsTheme : lightNewsTheme;
+      setTheme(themeValue);
+      localStorage.setItem("theme", newTheme);
+    }
   };
 
   const getTheme = () => {
