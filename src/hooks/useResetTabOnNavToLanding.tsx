@@ -5,7 +5,9 @@ const useResetTabOnNavToLanding = () => {
   const location = useLocation();
 
   React.useEffect(() => {
-    sessionStorage.removeItem("categoryTab");
+    if (location.pathname === "/") {
+      sessionStorage.removeItem("categoryTab");
+    }
   }, [location]);
 };
 

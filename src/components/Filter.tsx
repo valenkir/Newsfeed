@@ -102,14 +102,14 @@ function Filter() {
     if (searchParams.get("q") || searchParams.get("country")) {
       const params: OtherFilters = {
         category: sessionStorage.getItem("categoryTab"),
+        page: 1,
       };
       setOtherFilters({
         q: "",
         countryName: "",
         country: "",
-        category: searchParams.get("category"),
+        category: sessionStorage.getItem("categoryTab"),
       });
-      console.log(params.category);
       setSearchParams(params as URLSearchParams);
       localStorage.removeItem("countryName");
       localStorage.removeItem("q");

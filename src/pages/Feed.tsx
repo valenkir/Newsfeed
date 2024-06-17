@@ -9,11 +9,9 @@ import { INews } from "../interfaces/NewsInterfaces";
 import { OtherFilters } from "../interfaces/FilterInterfaces";
 import useSearchParamsContext from "../hooks/useSearchParamsContext";
 import { copyCurrentSearchParams, template } from "../helperFunctions";
-import useResetTabOnNavToLanding from "../hooks/useResetTabOnNavToLanding";
 
 function Feed() {
   const pageLimit = 20;
-  useResetTabOnNavToLanding();
   const [news, setNews] = React.useState<INews[]>([]);
   const [newsTotalResults, setNewsTotalResult] = React.useState<number>(0);
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -69,6 +67,7 @@ function Feed() {
           sx={{
             ml: { md: "20%", xs: 0 },
             mt: { md: "1%", xs: "55%", sm: "35%" },
+            mb: "10%",
           }}
         >
           <NewsFeed news={news} />
@@ -142,7 +141,6 @@ export const fetchNewsCategoryData = async (
   searchParams: URLSearchParams
 ): Promise<any> => {
   const query = setFetchQuery(searchParams);
-  console.log(query);
   const response = await fetch(
     `https://newsapi.org/v2/top-headlines?pageSize=${pageLimit}&${query}apiKey=${process.env.REACT_APP_NEWS_KEY}`
   );

@@ -6,8 +6,10 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { QParamsProvider } from "./context/QParams";
 import Footer from "./components/Footer";
+import useResetTabOnNavToLanding from "./hooks/useResetTabOnNavToLanding";
 
 function RouterLayout() {
+  useResetTabOnNavToLanding();
   return (
     <QParamsProvider>
       <div>
