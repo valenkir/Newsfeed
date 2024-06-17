@@ -12,6 +12,8 @@ export const darkNewsTheme = createTheme({
     secondary: {
       main: "#fff",
       contrastText: "#5FCCB7",
+      light: "#8f9b9a",
+      dark: "#435654",
     },
     text: {
       primary: "#fff",
@@ -41,6 +43,8 @@ export const lightNewsTheme = createTheme({
     secondary: {
       main: "#2B2D42",
       contrastText: "#795548",
+      light: "#d6c9c5",
+      dark: "#583d33",
     },
     text: {
       primary: "#381D14",

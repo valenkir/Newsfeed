@@ -8,7 +8,6 @@ import Landing from "./pages/Landing";
 import RouterLayout from "./RouterLayout";
 import CssBaseline from "@mui/material/CssBaseline";
 import { fetchData } from "./components/HeadlinesList";
-import "./assets/css/App.scss";
 import FeedLayout from "./FeedLayout";
 import Feed from "./pages/Feed";
 import { ThemeProvider } from "./context/Theme";

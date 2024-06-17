@@ -30,7 +30,7 @@ const countries = {
 };
 
 function Filter() {
-  const { searchParams, setSearchParams, setTab } = useSearchParamsContext();
+  const { searchParams, setSearchParams } = useSearchParamsContext();
   //This one is needed for the IF statement in handleApplyClick and to handle changes in the input fields; changing input fields doesn't work with the localStorage only for some reason
   const [otherFilters, setOtherFilters] = React.useState<
     OtherFilters | undefined

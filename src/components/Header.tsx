@@ -17,6 +17,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { useThemeContext } from "../context/Theme";
 import HeaderMenu from "./HeaderMenu";
 import useSearchParamsContext from "../hooks/useSearchParamsContext";
+import useResetTabOnNavToLanding from "../hooks/useResetTabOnNavToLanding";
 import darkLogo from "../assets/images/dark-logo.svg";
 import lightLogo from "../assets/images/light-logo.svg";
 
@@ -35,7 +36,8 @@ function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
-  const { setTab, setSearchParams, tab } = useSearchParamsContext();
+  const { changeTab, setSearchParams, tab } = useSearchParamsContext();
+  useResetTabOnNavToLanding();
   const { theme, changeTheme } = useThemeContext();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -58,7 +60,7 @@ function Header() {
     }
     if (categoryValue) {
       sessionStorage.setItem("categoryTab", categoryValue);
-      setTab(categoryValue);
+      changeTab(categoryValue);
     }
     setSearchParams(filter as URLSearchParams);
     localStorage.removeItem("countryName");
@@ -73,8 +75,7 @@ function Header() {
   };
 
   const handleLogoClick = () => {
-    setTab(null);
-    localStorage.removeItem("categoryTab");
+    changeTab(null);
   };
 
   const webMenuStyles = {
@@ -153,7 +154,8 @@ function Header() {
                   <HeaderMenu
                     filters={filters}
                     clickHandler={handleClickFilter}
-                    activeFilter={tab}
+                    tab={tab}
+                    bgColor="secondary.light"
                   />
                 </Menu>
                 <ToggleButtonGroup
@@ -219,7 +221,8 @@ function Header() {
                   filters={filters}
                   styles={webMenuStyles}
                   clickHandler={handleClickFilter}
-                  activeFilter={tab}
+                  tab={tab}
+                  bgColor="secondary.dark"
                 />
               </Box>
               <ToggleButtonGroup

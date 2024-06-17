@@ -7,13 +7,15 @@ interface headerMenuProps {
   filters: string[];
   styles?: SxProps<Theme>;
   clickHandler?: any;
-  activeFilter: string | null;
+  tab: string | null;
+  bgColor: string;
 }
 function HeaderMenu({
   filters,
   styles = [],
   clickHandler,
-  activeFilter,
+  tab,
+  bgColor,
 }: headerMenuProps) {
   const setMenuItemsColor = () => {
     return localStorage.getItem("theme") === "dark"
@@ -22,11 +24,11 @@ function HeaderMenu({
   };
 
   const setTabBgColor = (filter: string) => {
-    if (activeFilter) {
-      return filter === activeFilter ? "primary.dark" : "transparent";
+    if (tab) {
+      return filter === tab ? bgColor : "transparent";
     } else if (sessionStorage.getItem("categoryTab")) {
       return filter === sessionStorage.getItem("categoryTab")
-        ? "primary.dark"
+        ? bgColor
         : "transparent";
     } else {
       return "transparent";
