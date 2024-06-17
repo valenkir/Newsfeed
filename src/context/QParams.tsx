@@ -7,10 +7,13 @@ const QParamsContext = React.createContext<QParamsContextType | undefined>(
 );
 
 function QParamsProvider({ children }: { children: React.ReactNode }) {
-  let [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [tab, setTab] = React.useState<string | null>(null);
   const contextValue: QParamsContextType = {
     searchParams,
     setSearchParams,
+    tab,
+    setTab,
   };
   return (
     <QParamsContext.Provider value={contextValue}>

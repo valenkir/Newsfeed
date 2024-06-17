@@ -7,6 +7,7 @@ export const darkNewsTheme = createTheme({
       main: "#357266",
       light: "#B2DFDB",
       contrastText: "#fff",
+      dark: "#435654",
     },
     secondary: {
       main: "#fff",
@@ -27,24 +28,6 @@ export const darkNewsTheme = createTheme({
       fontFamily: "Righteous-Regular",
     },
   },
-  components: {
-    MuiTabs: {
-      styleOverrides: {
-        indicator: {
-          backgroundColor: "#fff",
-        },
-      },
-    },
-    MuiTab: {
-      styleOverrides: {
-        root: {
-          "&.Mui-selected": {
-            color: "#fff",
-          },
-        },
-      },
-    },
-  },
 });
 
 export const lightNewsTheme = createTheme({
@@ -53,6 +36,7 @@ export const lightNewsTheme = createTheme({
     primary: {
       main: "#795548",
       contrastText: "#fff",
+      dark: "#583d33",
     },
     secondary: {
       main: "#2B2D42",

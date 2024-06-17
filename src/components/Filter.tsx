@@ -30,7 +30,7 @@ const countries = {
 };
 
 function Filter() {
-  const { searchParams, setSearchParams } = useSearchParamsContext();
+  const { searchParams, setSearchParams, setTab } = useSearchParamsContext();
   //This one is needed for the IF statement in handleApplyClick and to handle changes in the input fields; changing input fields doesn't work with the localStorage only for some reason
   const [otherFilters, setOtherFilters] = React.useState<
     OtherFilters | undefined
@@ -98,17 +98,22 @@ function Filter() {
 
   const handleCancelClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
-    if (searchParams.size || Object.values(otherFilters as OtherFilters)) {
-      const params = {};
-      setSearchParams(params as URLSearchParams);
+
+    if (searchParams.get("q") || searchParams.get("country")) {
+      const params: OtherFilters = {
+        category: sessionStorage.getItem("categoryTab"),
+      };
       setOtherFilters({
         q: "",
         countryName: "",
         country: "",
+        category: searchParams.get("category"),
       });
+      console.log(params.category);
+      setSearchParams(params as URLSearchParams);
+      localStorage.removeItem("countryName");
+      localStorage.removeItem("q");
     }
-    localStorage.removeItem("countryName");
-    localStorage.removeItem("q");
   };
 
   return (

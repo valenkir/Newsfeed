@@ -35,7 +35,7 @@ function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
-  const { setSearchParams } = useSearchParamsContext();
+  const { setTab, setSearchParams, tab } = useSearchParamsContext();
   const { theme, changeTheme } = useThemeContext();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -56,6 +56,10 @@ function Header() {
     } else if (categoryValue === "All") {
       filter.category = "general";
     }
+    if (categoryValue) {
+      sessionStorage.setItem("categoryTab", categoryValue);
+      setTab(categoryValue);
+    }
     setSearchParams(filter as URLSearchParams);
     localStorage.removeItem("countryName");
     localStorage.removeItem("q");
@@ -66,6 +70,11 @@ function Header() {
     if (themeBtn) {
       changeTheme(themeBtn);
     }
+  };
+
+  const handleLogoClick = () => {
+    setTab(null);
+    localStorage.removeItem("categoryTab");
   };
 
   const webMenuStyles = {
@@ -144,6 +153,7 @@ function Header() {
                   <HeaderMenu
                     filters={filters}
                     clickHandler={handleClickFilter}
+                    activeFilter={tab}
                   />
                 </Menu>
                 <ToggleButtonGroup
@@ -179,6 +189,9 @@ function Header() {
               }}
             >
               <Button
+                component={NavLink}
+                to={`/`}
+                onClick={handleLogoClick}
                 startIcon={
                   <Avatar
                     src={
@@ -186,8 +199,6 @@ function Header() {
                         ? darkLogo
                         : lightLogo
                     }
-                    component={NavLink}
-                    to={`/`}
                     sx={{ width: 60, height: 60 }}
                   />
                 }
@@ -208,6 +219,7 @@ function Header() {
                   filters={filters}
                   styles={webMenuStyles}
                   clickHandler={handleClickFilter}
+                  activeFilter={tab}
                 />
               </Box>
               <ToggleButtonGroup
