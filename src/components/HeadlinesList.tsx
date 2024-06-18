@@ -6,11 +6,14 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import News from "./News";
 import { INews } from "../interfaces/NewsInterfaces";
+import moment from "moment";
 
 //if fetch returns data.articles, this interface is not needed; otherwise keep it
 export interface HeadlinesData {
   articles: INews[];
 }
+
+const yesterday = moment().subtract(1, "days").format("YYYY-MM-DD");
 
 function HeadlinesList() {
   const [headlineNews, setHeadlineNews] = React.useState<INews[]>([]);
@@ -68,7 +71,7 @@ function HeadlinesList() {
 
 export const fetchData = async (): Promise<any> => {
   const response = await fetch(
-    `https://newsapi.org/v2/top-headlines?sources=bbc-news&pageSize=6&apiKey=${process.env.REACT_APP_NEWS_KEY}`
+    `https://newsapi.org/v2/everything?q=technologies&searchIn=title&language=en&from=${yesterday}&to=${yesterday}&pageSize=6&sortBy=popularity&apiKey=${process.env.REACT_APP_NEWS_KEY}`
   );
   const data = await response.json();
   return data;
