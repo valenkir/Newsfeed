@@ -101,14 +101,14 @@ function Filter() {
     const filterValues = otherFilters ? Object.values(otherFilters) : null;
     if (searchParams.get("q") || searchParams.get("country") || filterValues) {
       const params: OtherFilters = {
-        category: sessionStorage.getItem("categoryTab"),
         page: 1,
+        category: searchParams.get("category"),
       };
       setOtherFilters({
         q: "",
         countryName: "",
         country: "",
-        category: sessionStorage.getItem("categoryTab"),
+        category: searchParams.get("category"),
       });
       setSearchParams(params as URLSearchParams);
       localStorage.removeItem("countryName");

@@ -61,6 +61,7 @@ function Header() {
       sessionStorage.setItem("categoryTab", categoryValue);
       changeTab(categoryValue);
     }
+
     setSearchParams(filter as URLSearchParams);
     localStorage.removeItem("countryName");
     localStorage.removeItem("q");
