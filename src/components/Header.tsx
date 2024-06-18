@@ -30,7 +30,6 @@ export const filters = [
   "Sports",
   "Entertainment",
 ];
-//export const moreFilters = ["Health", "Sports", "Entertainment"];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(

@@ -12,8 +12,6 @@ export interface HeadlinesData {
   articles: INews[];
 }
 
-// const proxyUrl = "https://cors-anywhere.herokuapp.com/";
-
 function HeadlinesList() {
   const [headlineNews, setHeadlineNews] = React.useState<INews[]>([]);
 
