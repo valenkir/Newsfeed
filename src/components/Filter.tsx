@@ -98,8 +98,8 @@ function Filter() {
 
   const handleCancelClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
-
-    if (searchParams.get("q") || searchParams.get("country")) {
+    const filterValues = otherFilters ? Object.values(otherFilters) : null;
+    if (searchParams.get("q") || searchParams.get("country") || filterValues) {
       const params: OtherFilters = {
         category: sessionStorage.getItem("categoryTab"),
         page: 1,
